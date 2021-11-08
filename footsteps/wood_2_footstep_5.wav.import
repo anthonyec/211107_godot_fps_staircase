@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/wood_2_footstep_5.wav-2f4df0416f2386d3ff48dbea793c5ab8.sample"
+
+[deps]
+
+source_file="res://footsteps/wood_2_footstep_5.wav"
+dest_files=[ "res://.import/wood_2_footstep_5.wav-2f4df0416f2386d3ff48dbea793c5ab8.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=true
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=true
+edit/loop=false
+compress/mode=0
