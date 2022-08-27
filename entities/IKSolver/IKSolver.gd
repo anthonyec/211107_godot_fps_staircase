@@ -2,81 +2,76 @@ extends Spatial
 
 export var iterations = 1;
 
-onready var chain: Spatial = $Chain
-onready var target: Position3D = $Target
-onready var pole: Position3D = $Pole
+var bone_length = 1
 
-var bone_length = 0.5
-
-var bones = []
+var target: Position3D
+var pole: Position3D
+var end_point: Position3D
+var bones
 var last_target_position: Vector3 
-var children
+
+func transform_y(target: Spatial, normal: Vector3) -> void:
+	var rotation_axis = Vector3.UP.cross(normal).normalized()
+	var rotation_angle = Vector3.UP.angle_to(normal)
+	target.transform.basis = Basis(rotation_axis, rotation_angle)
 
 func _ready() -> void:
-	last_target_position = target.global_transform.origin
-	
-	children = $Chain.get_children()
-	var children_count = $Chain.get_child_count()
-	
-	for index in range(children_count):
-		var child = children[index]
-		var previous_child = children[0] if index == 0 else children[index - 1]
-		
-		var bone = {
-			"child": child,
-			"originalPosition": child.global_transform.origin,
-			"originalRotation": child.rotation,
-			"length": 1,
-			
-			"position": child.global_transform.origin,
-			"up": previous_child.global_transform.origin - child.global_transform.origin
-		}
-		
-		bones.append(bone)
+	target = $Target
+	pole = $Pole
+	bones = $Chain.get_children()
+	end_point = $Chain/Bone1/EndPoint # TODO: Make dynamic or user definable.
 
-func _process(_delta: float) -> void:	
+func _process(_delta: float) -> void:		
 	solve()
-	
-func stack_bones_based_on_length() -> void:
-	var index = bones.size() - 2
-	
-	while index >= 0:
-#		bones[index]["position"] = bones[index + 1]["position"] + (-bones[index + 1]["up"] * bones[index + 1]["length"])
-		children[index].global_transform.origin = children[index + 1].global_transform.origin + (-children[index + 1].global_transform.basis.y * bone_length)
-		index = index - 1
-		
-func solve() -> void:
-	var root_position: Vector3 = bones[bones.size() - 1]["position"]
-	
-#	bones[bones.size() - 1]["up"] = -(pole.global_transform.origin - bones[bones.size() - 1]["position"])
-	children[children.size() - 1].look_at(-(pole.global_transform.origin - children[children.size() - 1].global_transform.origin), Vector3.UP)
-	
-	stack_bones_based_on_length()
-	
-	for index in range(iterations):
-#		bones[0]["up"] = -(target.global_transform.origin - bones[0]["position"])
-		children[0].look_at(target.global_transform.origin, Vector3.UP)
-		
-#		bones[0]["position"] = target.global_transform.origin - (-bones[0]["up"] * bones[0]["length"])
-		children[0].global_transform.origin = target.global_transform.origin - (-children[0].global_transform.basis.y * bone_length)
-	
-		for j in range(bones.size()):
-#			bones[j]["up"] = -(bones[j - 1]["position"] - bones[j]["position"])
-			children[j].look_at(children[j - 1].global_transform.origin, Vector3.UP)
-			
-#			bones[j]["position"] = bones[j - 1]["position"] - (-bones[j]["up"] * bones[j]["length"])
-			children[j].global_transform.origin = children[j -1].global_transform.origin - (-children[j].global_transform.basis.y * bone_length)
-		
-#		bones[bones.size() - 1]["position"] = root_position
-		children[children.size() - 1].global_transform.origin = root_position
-		
-#		var j = bones.size() - 2
-		var j = children.size() - 2
-	
-		while j >= 0:
-#			bones[j]["position"] = bones[j + 1]["position"] + (-bones[j + 1]["up"] * bones[j + 1]["length"])
-			children[j].global_transform.origin = children[j + 1].global_transform.origin + (-children[j + 1].global_transform.basis.y * bone_length)
-			j = j - 1
-		
-		last_target_position = target.global_transform.origin
 
+func solve() -> void:
+#	Vector3 rootPoint = bones[bones.Length - 1].bone.position;
+	var root_point = bones[bones.size() - 1].global_transform.origin
+
+	# Point last bone away towards the pole position.
+	transform_y(bones[bones.size() - 1], (pole.global_transform.origin - bones[bones.size() - 1].global_transform.origin))
+	
+	var index = bones.size() - 2
+
+	while index >= 0:
+		# Move all bones except the last one to the end of each one (end based on their Y axis).
+		bones[index].global_transform.origin = bones[index + 1].global_transform.origin + (bones[index + 1].global_transform.basis.y * bone_length)
+		
+		# Poiint all bones except the last one towards the pole.
+		transform_y(bones[index], (pole.global_transform.origin - bones[index].global_transform.origin))
+		index = index - 1
+
+
+#func stack_bones_based_on_length() -> void:
+#	var index = children.size() - 2
+#
+#	while index >= 0:
+#		children[index].global_transform.origin = children[index + 1].global_transform.origin + (-children[index + 1].global_transform.basis.y * bone_length)
+#		index = index - 1
+#
+#func solve() -> void:
+#	var root_position: Vector3 = children[children.size() - 1].global_transform.origin
+#
+#	children[children.size() - 1].look_at(-(pole.global_transform.origin - children[children.size() - 1].global_transform.origin), Vector3.UP)
+#
+#	stack_bones_based_on_length()
+#	return
+#
+#	for index in range(iterations):
+#		children[0].look_at(target.global_transform.origin, Vector3.UP)
+#		children[0].global_transform.origin = target.global_transform.origin - (-children[0].global_transform.basis.y * bone_length)
+#
+#		for j in range(children.size()):
+#			children[j].look_at(children[j - 1].global_transform.origin, Vector3.UP)
+#			children[j].global_transform.origin = children[j -1].global_transform.origin - (-children[j].global_transform.basis.y * bone_length)
+#
+#		children[children.size() - 1].global_transform.origin = root_position
+#
+#		var j = children.size() - 2
+#
+#		while j >= 0:
+#			children[j].global_transform.origin = children[j + 1].global_transform.origin + (-children[j + 1].global_transform.basis.y * bone_length)
+#			j = j - 1
+#
+#		last_target_position = target.global_transform.origin
+#

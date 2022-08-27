@@ -1,9 +1,28 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://entities/IKSolver/IKSolver.gd" type="Script" id=1]
+[ext_resource path="res://entities/IKSolver/blue.tres" type="Material" id=2]
+[ext_resource path="res://entities/IKSolver/green.tres" type="Material" id=3]
+[ext_resource path="res://entities/IKSolver/red.tres" type="Material" id=4]
 
 [sub_resource type="CubeMesh" id=16]
-size = Vector3( 0.1, 0.5, 0.1 )
+material = ExtResource( 2 )
+size = Vector3( 1, 1, 1 )
+
+[sub_resource type="CylinderMesh" id=20]
+top_radius = 0.0
+bottom_radius = 0.1
+height = 0.8
+
+[sub_resource type="SphereMesh" id=17]
+radius = 0.1
+height = 0.2
+
+[sub_resource type="SpatialMaterial" id=19]
+albedo_color = Color( 1, 0.0901961, 0.196078, 1 )
+
+[sub_resource type="SpatialMaterial" id=18]
+albedo_color = Color( 0, 1, 0.862745, 1 )
 
 [node name="IKSolver" type="Spatial"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.13935, 0 )
@@ -11,23 +30,54 @@ script = ExtResource( 1 )
 
 [node name="Chain" type="Spatial" parent="."]
 
-[node name="CSGMesh" type="CSGMesh" parent="Chain"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.507077, 0 )
+[node name="Bone1" type="CSGMesh" parent="Chain"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 mesh = SubResource( 16 )
 
-[node name="CSGMesh2" type="CSGMesh" parent="Chain"]
-mesh = SubResource( 16 )
+[node name="EndPoint" type="Position3D" parent="Chain/Bone1"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0 )
 
-[node name="CSGMesh3" type="CSGMesh" parent="Chain"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.506397, 0 )
+[node name="Bone2" type="CSGMesh" parent="Chain"]
 mesh = SubResource( 16 )
+material = ExtResource( 3 )
 
-[node name="CSGMesh4" type="CSGMesh" parent="Chain"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00046432, -1.00826, -0.000755072 )
+[node name="Bone3" type="CSGMesh" parent="Chain"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0 )
 mesh = SubResource( 16 )
+material = ExtResource( 4 )
 
-[node name="Pole" type="Position3D" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.443206, 0, 0 )
+[node name="AxisY" type="MeshInstance" parent="Chain/Bone3"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.60412, 0 )
+mesh = SubResource( 20 )
+skeleton = NodePath("../../Bone1")
+material/0 = ExtResource( 3 )
+
+[node name="AxisX" type="MeshInstance" parent="Chain/Bone3"]
+transform = Transform( -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0.598, 0, 0 )
+mesh = SubResource( 20 )
+skeleton = NodePath("../../Bone1")
+material/0 = ExtResource( 4 )
+
+[node name="AxisZ" type="MeshInstance" parent="Chain/Bone3"]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0.596575 )
+mesh = SubResource( 20 )
+skeleton = NodePath("../../Bone1")
+material/0 = ExtResource( 2 )
 
 [node name="Target" type="Position3D" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.29493, -0.402448, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 2, 0 )
+
+[node name="MeshInstance2" type="MeshInstance" parent="Target"]
+mesh = SubResource( 17 )
+skeleton = NodePath("../../Pole")
+material/0 = SubResource( 19 )
+
+[node name="Pole" type="Position3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -2 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Pole"]
+mesh = SubResource( 17 )
+material/0 = SubResource( 18 )
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4 )
