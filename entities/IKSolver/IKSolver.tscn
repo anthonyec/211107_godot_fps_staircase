@@ -4,15 +4,11 @@
 [ext_resource path="res://entities/IKSolver/blue.tres" type="Material" id=2]
 [ext_resource path="res://entities/IKSolver/green.tres" type="Material" id=3]
 [ext_resource path="res://entities/IKSolver/red.tres" type="Material" id=4]
+[ext_resource path="res://entities/IKSolver/Axis.tscn" type="PackedScene" id=5]
 
 [sub_resource type="CubeMesh" id=16]
 material = ExtResource( 2 )
 size = Vector3( 1, 1, 1 )
-
-[sub_resource type="CylinderMesh" id=20]
-top_radius = 0.0
-bottom_radius = 0.1
-height = 0.8
 
 [sub_resource type="SphereMesh" id=17]
 radius = 0.1
@@ -37,32 +33,20 @@ mesh = SubResource( 16 )
 [node name="EndPoint" type="Position3D" parent="Chain/Bone1"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0 )
 
+[node name="Axis3" parent="Chain/Bone1" instance=ExtResource( 5 )]
+
 [node name="Bone2" type="CSGMesh" parent="Chain"]
 mesh = SubResource( 16 )
 material = ExtResource( 3 )
+
+[node name="Axis2" parent="Chain/Bone2" instance=ExtResource( 5 )]
 
 [node name="Bone3" type="CSGMesh" parent="Chain"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0 )
 mesh = SubResource( 16 )
 material = ExtResource( 4 )
 
-[node name="AxisY" type="MeshInstance" parent="Chain/Bone3"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.60412, 0 )
-mesh = SubResource( 20 )
-skeleton = NodePath("../../Bone1")
-material/0 = ExtResource( 3 )
-
-[node name="AxisX" type="MeshInstance" parent="Chain/Bone3"]
-transform = Transform( -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0.598, 0, 0 )
-mesh = SubResource( 20 )
-skeleton = NodePath("../../Bone1")
-material/0 = ExtResource( 4 )
-
-[node name="AxisZ" type="MeshInstance" parent="Chain/Bone3"]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0.596575 )
-mesh = SubResource( 20 )
-skeleton = NodePath("../../Bone1")
-material/0 = ExtResource( 2 )
+[node name="Axis" parent="Chain/Bone3" instance=ExtResource( 5 )]
 
 [node name="Target" type="Position3D" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 2, 0 )

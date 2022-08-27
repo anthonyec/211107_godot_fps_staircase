@@ -37,41 +37,32 @@ func solve() -> void:
 		# Move all bones except the last one to the end of each one (end based on their Y axis).
 		bones[index].global_transform.origin = bones[index + 1].global_transform.origin + (bones[index + 1].global_transform.basis.y * bone_length)
 		
-		# Poiint all bones except the last one towards the pole.
+		# Point all bones except the last one towards the pole.
 		transform_y(bones[index], (pole.global_transform.origin - bones[index].global_transform.origin))
 		index = index - 1
+		
+	for iteration in range(iterations):
+		# Point first bone towards target position.
+		transform_y(bones[0], -(target.global_transform.origin - bones[0].global_transform.origin))
+		
+		# Move first bone to target.
+		bones[0].global_transform.origin = target.global_transform.origin - (-bones[0].global_transform.basis.y * bone_length)
+		
+		# Apply transforms and roations to all other bones except the first.
+		var j = 1
+		
+		while j < bones.size():
+			# Point bone towards position between previous and current bone(?).
+			transform_y(bones[j], -(bones[j - 1].global_transform.origin - bones[j].global_transform.origin))
+			
+			# TODO: Explain
+			bones[j].global_transform.origin = bones[j - 1].global_transform.origin - (-bones[j].global_transform.basis.y * bone_length)
+			j = j + 1
+			
+		bones[bones.size() - 1].global_transform.origin = root_point
+		
+		var k = bones.size() - 2
 
-
-#func stack_bones_based_on_length() -> void:
-#	var index = children.size() - 2
-#
-#	while index >= 0:
-#		children[index].global_transform.origin = children[index + 1].global_transform.origin + (-children[index + 1].global_transform.basis.y * bone_length)
-#		index = index - 1
-#
-#func solve() -> void:
-#	var root_position: Vector3 = children[children.size() - 1].global_transform.origin
-#
-#	children[children.size() - 1].look_at(-(pole.global_transform.origin - children[children.size() - 1].global_transform.origin), Vector3.UP)
-#
-#	stack_bones_based_on_length()
-#	return
-#
-#	for index in range(iterations):
-#		children[0].look_at(target.global_transform.origin, Vector3.UP)
-#		children[0].global_transform.origin = target.global_transform.origin - (-children[0].global_transform.basis.y * bone_length)
-#
-#		for j in range(children.size()):
-#			children[j].look_at(children[j - 1].global_transform.origin, Vector3.UP)
-#			children[j].global_transform.origin = children[j -1].global_transform.origin - (-children[j].global_transform.basis.y * bone_length)
-#
-#		children[children.size() - 1].global_transform.origin = root_position
-#
-#		var j = children.size() - 2
-#
-#		while j >= 0:
-#			children[j].global_transform.origin = children[j + 1].global_transform.origin + (-children[j + 1].global_transform.basis.y * bone_length)
-#			j = j - 1
-#
-#		last_target_position = target.global_transform.origin
-#
+		while k >= 0:
+			bones[k].global_transform.origin = bones[k + 1].global_transform.origin + (-bones[k + 1].global_transform.basis.y * bone_length)
+			k = k - 1
