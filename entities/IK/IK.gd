@@ -3,6 +3,7 @@ extends Spatial
 export var target_path: NodePath
 export var pole_path: NodePath
 export var iterations: int = 10;
+export var pole_enabled: bool = true
 
 onready var target: Spatial = get_node(target_path)
 onready var pole: Spatial = get_node(pole_path)
@@ -97,40 +98,26 @@ func solve() -> void:
 				positions[next_index] = positions[current_index] + direction * length
 			
 			# Adjust for pole
-			for index in range(1, positions.size() - 1):
-				var direction = positions[index].direction_to(target.global_transform.origin)			
-				var right = direction.cross(Vector3.UP).normalized()
-				var up = direction.cross(right).normalized()
-				var plane = Plane(
-					positions[index] + right,
-					positions[index] - right,
-					positions[index] + up
-				)
-				
-				var projected_pole = plane.project(pole.global_transform.origin)
-				var angle_to_pole = positions[index].signed_angle_to(projected_pole, direction)
-				
-				positions[index] = positions[index].rotated(direction, angle_to_pole)
-#
-#				DebugDraw.draw_box(start_position + right, Vector3(0.1, 0.1, 0.1), Color.red)
-#				DebugDraw.draw_box(start_position - right, Vector3(0.1, 0.1, 0.1), Color.red)
-#				DebugDraw.draw_box(start_position + up, Vector3(0.1, 0.1, 0.1), Color.red)
-				DebugDraw.draw_box(projected_pole, Vector3(0.1, 0.1, 0.1), Color.purple)
-
-#				var angle1 = positions[1].signed_angle_to(projected_pole, direction_to_target)
-#				var angle2 = positions[2].signed_angle_to(projected_pole, direction_to_target)
-#
-#				positions[1] = positions[1].rotated(direction_to_target, angle1)
-#				positions[2] = positions[2].rotated(direction_to_target, angle2)
-
-#			DebugDraw.draw_line_3d(root_position, target.global_transform.origin, Color.blue)
-#			DebugDraw.draw_box(root_position + right, Vector3(0.1, 0.1, 0.1), Color.red)
-#			DebugDraw.draw_box(root_position - right, Vector3(0.1, 0.1, 0.1), Color.red)
-#			DebugDraw.draw_box(root_position + up, Vector3(0.1, 0.1, 0.1), Color.red)
-#
-#			DebugDraw.draw_box(plane.project(projected_pole), Vector3(0.1, 0.1, 0.1), Color.purple)
-#			DebugDraw.draw_box(plane.project(positions[1]), Vector3(0.1, 0.1, 0.1), Color.green)
-#			DebugDraw.draw_box(plane.project(positions[2]), Vector3(0.1, 0.1, 0.1), Color.green)
+			if pole_enabled:
+				# For every bone except the root and lead
+				for index in range(1, positions.size() - 1):
+					var previous_index = index - 1
+					var next_index = index + 1
+					var direction = positions[previous_index].direction_to(positions[next_index])			
+					var right = direction.cross(Vector3.UP).normalized()
+					var up = direction.cross(right).normalized()
+					var plane = Plane(
+						positions[previous_index] + right,
+						positions[previous_index] - right,
+						positions[previous_index] + up
+					)
+					
+					# Project the pole and current bone position to the plane.
+					var projected_pole = plane.project(pole.global_transform.origin)
+					var projected_bone = plane.project(positions[index])
+					var angle_to_pole = projected_bone.signed_angle_to(projected_pole, plane.normal)
+					
+					positions[index] = positions[index].rotated(direction, angle_to_pole)
 
 			
 	# Apply all the positions to the bones after calculation	
