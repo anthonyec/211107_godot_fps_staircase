@@ -1,14 +1,15 @@
 extends Spatial
 
-export var iterations = 1;
+export var target_path: NodePath
+export var pole_path: NodePath
+export var iterations: int = 1;
+export var bone_length: float = 1
 
-var bone_length = 1
+onready var target: Spatial = get_node(target_path)
+onready var pole: Spatial = get_node(pole_path)
 
-var target: Position3D
-var pole: Position3D
-var end_point: Position3D
 var bones
-var last_target_position: Vector3 
+var is_error: bool = false
 
 func transform_y(target: Spatial, normal: Vector3) -> void:
 	var rotation_axis = Vector3.UP.cross(normal).normalized()
@@ -16,16 +17,25 @@ func transform_y(target: Spatial, normal: Vector3) -> void:
 	target.transform.basis = Basis(rotation_axis, rotation_angle)
 
 func _ready() -> void:
-	target = $Target
-	pole = $Pole
-	bones = $Chain.get_children()
-	end_point = $Chain/Bone1/EndPoint # TODO: Make dynamic or user definable.
+	bones = get_children()
 
 func _process(_delta: float) -> void:		
+	if is_error:
+		return
+		
+	if !target_path or !pole_path:
+		print("IKSolver: No target or pole path set")
+		is_error = true
+		return
+		
+	if bones.empty():
+		print("IKSolver: No children, no bones!")
+		is_error = true
+		return
+		
 	solve()
 
 func solve() -> void:
-#	Vector3 rootPoint = bones[bones.Length - 1].bone.position;
 	var root_point = bones[bones.size() - 1].global_transform.origin
 
 	# Point last bone away towards the pole position.

@@ -1,8 +1,9 @@
-extends RayCast
+extends Spatial
 
 export var step_size: float = 0.3
 
 onready var foot: MeshInstance = $Foot
+onready var raycast: RayCast = $RayCast
 
 var current_foot_position: Vector3
 var target_foot_position: Vector3
@@ -11,8 +12,8 @@ func _ready() -> void:
 	current_foot_position = global_transform.origin - global_transform.basis.y
 
 func _physics_process(delta: float) -> void:
-	if is_colliding():
-		target_foot_position = get_collision_point()
+	if raycast.is_colliding():
+		target_foot_position = raycast.get_collision_point()
 	else:
 		target_foot_position = global_transform.origin - global_transform.basis.y
 	
