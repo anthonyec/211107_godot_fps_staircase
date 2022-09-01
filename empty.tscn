@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://entities/FirstPersonPlayer/FirstPersonPlayer.tscn" type="PackedScene" id=1]
 [ext_resource path="res://pause.gd" type="Script" id=2]
@@ -6,10 +6,10 @@
 [ext_resource path="res://entities/Spider/Spider.gd" type="Script" id=4]
 [ext_resource path="res://addons/csg_plus/csg_plus_staircase.gd" type="Script" id=5]
 [ext_resource path="res://addons/kenney_prototype_textures/purple/texture_09.png" type="Texture" id=6]
-[ext_resource path="res://entities/Spider/Leg.gd" type="Script" id=7]
+[ext_resource path="res://entities/Spider/Leg.tscn" type="PackedScene" id=7]
 [ext_resource path="res://debug_grass.tres" type="Material" id=8]
-[ext_resource path="res://entities/IKSolver/IKSolver.tscn" type="PackedScene" id=9]
-[ext_resource path="res://Test.gd" type="Script" id=10]
+[ext_resource path="res://entities/ThirdPersonCamera/ThirdPersonCamera.tscn" type="PackedScene" id=9]
+[ext_resource path="res://entities/Spider/Legs.gd" type="Script" id=10]
 
 [sub_resource type="Environment" id=11]
 background_mode = 1
@@ -18,13 +18,6 @@ ambient_light_color = Color( 0.541176, 0.541176, 0.541176, 1 )
 fog_enabled = true
 fog_color = Color( 0.733333, 0.968627, 1, 1 )
 fog_sun_color = Color( 1, 0.901961, 0.701961, 1 )
-
-[sub_resource type="SphereMesh" id=14]
-radius = 0.05
-height = 0.1
-
-[sub_resource type="CubeMesh" id=20]
-size = Vector3( 0.1, 0.1, 0.1 )
 
 [sub_resource type="CapsuleShape" id=15]
 radius = 0.3
@@ -49,9 +42,6 @@ extents = Vector3( 25, 0.1, 25 )
 albedo_texture = ExtResource( 6 )
 uv1_triplanar = true
 
-[sub_resource type="CubeMesh" id=19]
-size = Vector3( 1, 1, 1 )
-
 [node name="Scene" type="Spatial"]
 
 [node name="Pause" type="Node" parent="."]
@@ -69,66 +59,39 @@ shadow_color = Color( 0.368627, 0.556863, 0.709804, 1 )
 
 [node name="FirstPersonPlayer" parent="." instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.37863, 1.39164, 2.83446 )
+enabled = false
+
+[node name="ThirdPersonCamera" parent="." instance=ExtResource( 9 )]
+target = NodePath("../Spider")
+distance_from_target = 3.0
 
 [node name="Spider" type="KinematicBody" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.08681, 0.744153, -2.47599 )
 script = ExtResource( 4 )
 
 [node name="Legs" type="Spatial" parent="Spider"]
+visible = false
+script = ExtResource( 10 )
 
-[node name="Leg" type="Spatial" parent="Spider/Legs"]
-script = ExtResource( 7 )
+[node name="Leg" parent="Spider/Legs" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.110634, 0, 0.412128 )
 
-[node name="RayCast" type="RayCast" parent="Spider/Legs/Leg"]
-transform = Transform( 0.707107, -0.707107, 0, 0.707107, 0.707107, 0, 0, 0, 1, 0, 0, -0.0343528 )
-enabled = true
+[node name="Leg2" parent="Spider/Legs" instance=ExtResource( 7 )]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.107167, 0, 0.412128 )
 
-[node name="Foot" type="MeshInstance" parent="Spider/Legs/Leg"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.24537, -1.30032, 0 )
-mesh = SubResource( 14 )
-skeleton = NodePath("../RayCast")
-material/0 = null
+[node name="Leg3" parent="Spider/Legs" instance=ExtResource( 7 )]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.107167, 0, -0.474105 )
 
-[node name="Pole" type="MeshInstance" parent="Spider/Legs/Leg"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.275687, 0.30238, 0 )
-mesh = SubResource( 14 )
-skeleton = NodePath("../RayCast")
-material/0 = null
-
-[node name="IKSolver" parent="Spider/Legs/Leg" instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
-target_path = NodePath("../Foot")
-pole_path = NodePath("../Pole")
-iterations = 3
-bone_length = 0.5
-
-[node name="Bone3" type="MeshInstance" parent="Spider/Legs/Leg/IKSolver"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.26384, 0 )
-mesh = SubResource( 20 )
-skeleton = NodePath("../../../../..")
-material/0 = null
-
-[node name="Bone2" type="MeshInstance" parent="Spider/Legs/Leg/IKSolver"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.770483, 0 )
-mesh = SubResource( 20 )
-skeleton = NodePath("../../../../..")
-material/0 = null
-
-[node name="Bone1" type="MeshInstance" parent="Spider/Legs/Leg/IKSolver"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.235207, 0 )
-mesh = SubResource( 20 )
-skeleton = NodePath("../../../../..")
-material/0 = null
+[node name="Leg4" parent="Spider/Legs" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0809426, 0, -0.474105 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Spider"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
 visible = false
 shape = SubResource( 15 )
-disabled = true
 
 [node name="MeshInstance" type="MeshInstance" parent="Spider"]
 mesh = SubResource( 13 )
-material/0 = null
 
 [node name="Ground3" type="RigidBody" parent="." groups=["dirt_1"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 10.0264, 0.0742149, -0.00895977 )
@@ -242,9 +205,4 @@ use_collision = true
 [node name="Position3D" type="Position3D" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.449006, 0.821503, 0.0706384 )
 
-[node name="MeshInstance" type="MeshInstance" parent="."]
-transform = Transform( -0.0796206, -0.903353, -0.421442, 0.996825, -0.0721546, -0.0336623, 5.58793e-09, -0.422784, 0.90623, 0, 0.785639, 1.03614 )
-mesh = SubResource( 19 )
-material/0 = null
-script = ExtResource( 10 )
-target = NodePath("../Position3D")
+[editable path="Spider/Legs/Leg"]

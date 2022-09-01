@@ -1,5 +1,6 @@
 extends KinematicBody
 
+export var enabled: bool = true
 export var speed: float = 5
 export var jump_strength: float = 6
 export var gravity: float = 20
@@ -41,7 +42,7 @@ func _physics_process(delta: float) -> void:
 	elif just_landed:
 		snap_vector = Vector3.DOWN
 
-	move_velocity = move_and_slide_with_snap(move_velocity, snap_vector, Vector3.UP, true)#
+	move_velocity = move_and_slide_with_snap(move_velocity, snap_vector, Vector3.UP, true)
 	apply_rotation(delta)
 	
 	footsteps.is_on_floor = is_on_floor()

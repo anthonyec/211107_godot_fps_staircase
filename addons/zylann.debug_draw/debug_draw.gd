@@ -50,7 +50,7 @@ func draw_box(position: Vector3, size: Vector3, color: Color = Color(1,1,1)):
 	var mat := _get_line_material()
 	mat.albedo_color = color
 	mi.material_override = mat
-	mi.translation = position
+	mi.translation = position - (size / 2)
 	mi.scale = size
 	_boxes.append({
 		"node": mi,

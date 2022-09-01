@@ -1,5 +1,6 @@
 extends Spatial
 
+export var debug: bool = false
 export var target_path: NodePath
 export var pole_path: NodePath
 export var iterations: int = 10;
@@ -10,14 +11,12 @@ onready var pole: Spatial = get_node(pole_path)
 
 var is_error: bool = false
 var bones = []
+# Joint positions are stored seperatly from the bones so that they can be calculated on and
+# then applied after all the calculations.
 var positions = []
+# Distances between each joint.
 var lengths = []
 var total_length = 0
-
-func transform_y(target: Spatial, normal: Vector3) -> void:
-	var rotation_axis = Vector3.UP.cross(normal).normalized()
-	var rotation_angle = Vector3.UP.angle_to(normal)
-	target.transform.basis = Basis(rotation_axis, rotation_angle)
 
 func _ready() -> void:
 	bones = get_children()
@@ -30,8 +29,10 @@ func _ready() -> void:
 			var distance = bones[index - 1].global_transform.origin.distance_to(bones[index].global_transform.origin)
 			lengths.append(distance)
 			total_length = total_length + distance
+			
+	print(lengths)
 
-func _process(_delta: float) -> void:		
+func _process(_delta: float) -> void:	
 	if is_error:
 		return
 		
@@ -40,7 +41,7 @@ func _process(_delta: float) -> void:
 		is_error = true
 		return
 		
-	if !pole_path:
+	if pole_enabled and !pole_path:
 		print("IK: No pole path set")
 		is_error = true
 		return
@@ -51,6 +52,17 @@ func _process(_delta: float) -> void:
 		return
 		
 	solve()
+	
+func get_plane(global_position: Vector3, normal: Vector3) -> Plane:	
+	var right = normal.cross(Vector3.UP).normalized()
+	var up = normal.cross(right).normalized()
+	var plane = Plane(
+		global_position + right,
+		global_position - right,
+		global_position + up
+	)
+	
+	return plane
 
 func solve() -> void:
 	# Get positions of all bones.
@@ -59,13 +71,30 @@ func solve() -> void:
 		
 	# If the target distance is greater than the total length then move all
 	# bones towards the target except the first bone.
-	if bones[0].global_transform.origin.distance_squared_to(target.global_transform.origin) >= total_length * total_length:
-		var direction = bones[0].global_transform.origin.direction_to(target.global_transform.origin)
-		
+	## TODO: Work out why this is so snappy!
+	if positions[0].distance_to(target.global_transform.origin) > total_length:
+		var direction = positions[0].direction_to(target.global_transform.origin)
+
 		for index in range(1, positions.size()):
 			positions[index] = positions[index - 1] + (direction * lengths[index - 1])
 	else:
-		for iteration in range(iterations):
+		if pole_enabled:
+			# Pull all joints except the root and lead slightly towards the pole position before solving. 
+			# It's a naive solution to ensure the IK chain bends towards the pole. Inspired by:
+			# TODO: Add resource links here.
+			# TODO: Explain why this is done before solve iterations.
+			for _iteration in range(iterations):
+				for index in range(positions.size() - 2):
+					var next_index = index + 1
+					var length = lengths[index]
+					var difference_between_bone_and_pole = pole.global_transform.origin - positions[next_index]
+					
+					# TODO: Explain why it's like this.					
+					positions[next_index] = positions[next_index] + (difference_between_bone_and_pole * 0.5)
+
+				
+		for _iteration in range(iterations):			
+					
 			# Go back through the chain, from leaf to root, to calculate the positions.
 			# Move the leaf bone to the target position.
 			positions[positions.size() - 1] = target.global_transform.origin
@@ -83,7 +112,7 @@ func solve() -> void:
 				# If the direction is too staight, it cause the forward algo to not work correctly as 
 				# there needs to be some alight variation/bias in the direction.
 				if direction == Vector3.RIGHT or direction == Vector3.LEFT or direction == Vector3.UP or direction == Vector3.DOWN or direction == Vector3.FORWARD or direction == Vector3.BACK:
-					positions[next_index]  = positions[next_index] + Vector3(rand_range(-0.01, 0.01), rand_range(-0.01, 0.01), rand_range(-0.01, 0.01))
+					positions[next_index]  = positions[next_index] + Vector3(rand_range(-0.001, 0.001), rand_range(-0.001, 0.001), rand_range(-0.001, 0.001))
 			
 			# Move the root bone to it's original position
 			positions[0] = bones[0].global_transform.origin
@@ -96,31 +125,15 @@ func solve() -> void:
 				var length = lengths[current_index]
 		
 				positions[next_index] = positions[current_index] + direction * length
-			
-			# Adjust for pole
-			if pole_enabled:
-				# For every bone except the root and lead
-				for index in range(1, positions.size() - 1):
-					var previous_index = index - 1
-					var next_index = index + 1
-					var direction = positions[previous_index].direction_to(positions[next_index])			
-					var right = direction.cross(Vector3.UP).normalized()
-					var up = direction.cross(right).normalized()
-					var plane = Plane(
-						positions[previous_index] + right,
-						positions[previous_index] - right,
-						positions[previous_index] + up
-					)
-					
-					# Project the pole and current bone position to the plane.
-					var projected_pole = plane.project(pole.global_transform.origin)
-					var projected_bone = plane.project(positions[index])
-					var angle_to_pole = projected_bone.signed_angle_to(projected_pole, plane.normal)
-					
-					positions[index] = positions[index].rotated(direction, angle_to_pole)
-
-			
+	
+	if debug:
+		for index in range(1, positions.size()):		
+			if positions[index - 1].distance_to(positions[index]) > lengths[index - 1] + 0.001:
+				# If the distances between joints is bigger than expected, make the lines go red because it's bad!
+				DebugDraw.draw_line_3d(positions[index - 1], positions[index], Color.red)
+			else:
+				DebugDraw.draw_line_3d(positions[index - 1], positions[index], Color.white)
+	
 	# Apply all the positions to the bones after calculation	
 	for index in range(positions.size()):
 		bones[index].global_transform.origin = positions[index]
-		

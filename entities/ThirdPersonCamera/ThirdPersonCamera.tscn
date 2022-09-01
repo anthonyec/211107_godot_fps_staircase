@@ -1,0 +1,19 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://entities/ThirdPersonCamera/ThirdPersonCamera.gd" type="Script" id=1]
+
+[node name="ThirdPersonCamera" type="Spatial"]
+script = ExtResource( 1 )
+pivot_speed = Vector2( 3, 2 )
+
+[node name="Pivot" type="Spatial" parent="."]
+
+[node name="SpringArm" type="SpringArm" parent="Pivot"]
+spring_length = 10.0
+margin = 1.0
+
+[node name="Camera" type="Camera" parent="Pivot/SpringArm"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10 )
+current = true
+near = 0.01
+far = 1000.0

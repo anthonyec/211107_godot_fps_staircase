@@ -1,0 +1,18 @@
+[gd_resource type="Animation" format=2]
+
+[resource]
+resource_name = "test2"
+length = 18.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Pole:translation")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 2, 4, 6, 8, 10, 12, 14, 16.1 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( -3.58034, -0.000745773, -1.44528 ), Vector3( -0.590855, -0.000745773, -1.44528 ), Vector3( -1.33823, -0.000745773, 2.06046 ), Vector3( -3.40106, -0.000745773, 1.90032 ), Vector3( -3.58034, -0.000745773, -1.44528 ), Vector3( -3.66301, 1.16143, -1.68052 ), Vector3( -0.154441, 1.29612, 1.99883 ), Vector3( -0.329542, -1.5134, 2.11476 ), Vector3( -3.45225, -1.59699, -1.89783 ) ]
+}
