@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://entities/IKSolver/blue.tres" type="Material" id=1]
-[ext_resource path="res://entities/IKSolver/green.tres" type="Material" id=2]
-[ext_resource path="res://entities/IKSolver/red.tres" type="Material" id=3]
+[ext_resource path="res://entities/IK/blue.tres" type="Material" id=1]
+[ext_resource path="res://entities/IK/green.tres" type="Material" id=2]
+[ext_resource path="res://entities/IK/red.tres" type="Material" id=3]
 
 [sub_resource type="CylinderMesh" id=20]
 top_radius = 0.1

@@ -195,6 +195,14 @@ script = ExtResource( 5 )
 transform = Transform( 1.15091, 0, 0, 0, 0.352011, 0, 0, 0, 1.15115, -5.71993, 0, -0.58236 )
 use_collision = true
 
+[node name="CSGSphere2" type="CSGSphere" parent="."]
+transform = Transform( 1.15091, 0, 0, 0, 0.352011, 0, 0, 0, 1.15115, -6.44656, 0.158242, 0.41734 )
+use_collision = true
+
+[node name="CSGSphere3" type="CSGSphere" parent="."]
+transform = Transform( 1.15091, 0, 0, 0, 0.352011, 0, 0, 0, 1.15115, -5.35923, 0.210051, 0.784053 )
+use_collision = true
+
 [node name="Position3D" type="Position3D" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.449006, 0.821503, 0.0706384 )
 

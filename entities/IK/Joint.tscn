@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://entities/IKSolver/Axis.tscn" type="PackedScene" id=1]
+[ext_resource path="res://entities/IK/Axis.tscn" type="PackedScene" id=1]
 
 [sub_resource type="CubeMesh" id=1]
 size = Vector3( 0.5, 0.5, 0.5 )

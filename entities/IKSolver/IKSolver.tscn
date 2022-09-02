@@ -1,7 +1,0 @@
-[gd_scene load_steps=2 format=2]
-
-[ext_resource path="res://entities/IKSolver/IKSolver.gd" type="Script" id=1]
-
-[node name="IKSolver" type="Spatial"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.13935, 0 )
-script = ExtResource( 1 )
