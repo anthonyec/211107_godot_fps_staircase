@@ -29,8 +29,6 @@ func _ready() -> void:
 			var distance = bones[index - 1].global_transform.origin.distance_to(bones[index].global_transform.origin)
 			lengths.append(distance)
 			total_length = total_length + distance
-			
-	print(lengths)
 
 func _process(_delta: float) -> void:	
 	if is_error:
@@ -88,9 +86,10 @@ func solve() -> void:
 					var next_index = index + 1
 					var length = lengths[index]
 					var difference_between_bone_and_pole = pole.global_transform.origin - positions[next_index]
+					var clamped_distance_between_bone_and_pole = clamp(difference_between_bone_and_pole.length(), 0, length)
 					
 					# TODO: Explain why it's like this.					
-					positions[next_index] = positions[next_index] + (difference_between_bone_and_pole * 0.5)
+					positions[next_index] = positions[next_index] + (difference_between_bone_and_pole.normalized() * clamped_distance_between_bone_and_pole * 0.5)
 
 				
 		for _iteration in range(iterations):			

@@ -70,20 +70,13 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.08681, 0.744153, -2.47599 )
 script = ExtResource( 4 )
 
 [node name="Legs" type="Spatial" parent="Spider"]
-visible = false
 script = ExtResource( 10 )
 
 [node name="Leg" parent="Spider/Legs" instance=ExtResource( 7 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.110634, 0, 0.412128 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0936885, 0, 0.0124223 )
 
 [node name="Leg2" parent="Spider/Legs" instance=ExtResource( 7 )]
-transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.107167, 0, 0.412128 )
-
-[node name="Leg3" parent="Spider/Legs" instance=ExtResource( 7 )]
-transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.107167, 0, -0.474105 )
-
-[node name="Leg4" parent="Spider/Legs" instance=ExtResource( 7 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0809426, 0, -0.474105 )
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.0987487, 0, 0.0124223 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Spider"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
@@ -206,3 +199,4 @@ use_collision = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.449006, 0.821503, 0.0706384 )
 
 [editable path="Spider/Legs/Leg"]
+[editable path="Spider/Legs/Leg2"]

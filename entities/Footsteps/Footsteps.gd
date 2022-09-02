@@ -59,9 +59,8 @@ func _ready() -> void:
 
 			sounds[surface].append(load(base_directory_path + surface + "/" + file))
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	var velocity = global_transform.origin.distance_to(last_position) * 100
-	var steps_per_second = 1;
 
 	if velocity > 0.1:
 		var percent = clamp(1 - (1 / velocity), 0, 10)

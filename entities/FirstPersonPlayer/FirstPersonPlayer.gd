@@ -22,7 +22,6 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	var input_direction: Vector2 = Input.get_vector("move_left", "move_right", "move_up", "move_down")
-	var move_direction: Vector3 = Vector3(input_direction.x, 0, input_direction.y)
 	
 	var direction = Vector3.ZERO
 	direction += Vector3(input_direction.x, 0, input_direction.y)
