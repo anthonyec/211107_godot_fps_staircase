@@ -9,14 +9,13 @@ export var pole_enabled: bool = true
 onready var target: Spatial = get_node(target_path)
 onready var pole: Spatial = get_node(pole_path)
 
+var distance_error: float = 1
+
 var is_error: bool = false
 var bones = []
-# Joint positions are stored seperatly from the bones so that they can be calculated on and
-# then applied after all the calculations.
 var positions = []
-# Distances between each joint.
 var lengths = []
-var total_length = 0
+var total_length: float = 0
 
 func _ready() -> void:
 	bones = get_children()
@@ -28,6 +27,7 @@ func _ready() -> void:
 		if index > 0:
 			var distance = bones[index - 1].global_transform.origin.distance_to(bones[index].global_transform.origin)
 			lengths.append(distance)
+			print(distance)
 			total_length = total_length + distance
 
 func _process(_delta: float) -> void:	
@@ -48,19 +48,8 @@ func _process(_delta: float) -> void:
 		print("IK: No children, no bones!")
 		is_error = true
 		return
-		
+	
 	solve()
-	
-func get_plane(global_position: Vector3, normal: Vector3) -> Plane:	
-	var right = normal.cross(Vector3.UP).normalized()
-	var up = normal.cross(right).normalized()
-	var plane = Plane(
-		global_position + right,
-		global_position - right,
-		global_position + up
-	)
-	
-	return plane
 
 func solve() -> void:
 	# Get positions of all bones.
@@ -69,31 +58,30 @@ func solve() -> void:
 		
 	# If the target distance is greater than the total length then move all
 	# bones towards the target except the first bone.
-	## TODO: Work out why this is so snappy!
-	if positions[0].distance_to(target.global_transform.origin) > total_length:
+	## TODO: Work out why this is so snappy! Need to use distance_error to reduce snappy-ness
+	if positions[0].distance_to(target.global_transform.origin) >= total_length + distance_error:
 		var direction = positions[0].direction_to(target.global_transform.origin)
 
 		for index in range(1, positions.size()):
 			positions[index] = positions[index - 1] + (direction * lengths[index - 1])
 	else:
+		# TODO: Explain why pole is done before solve iterations.
 		if pole_enabled:
 			# Pull all joints except the root and lead slightly towards the pole position before solving. 
 			# It's a naive solution to ensure the IK chain bends towards the pole. Inspired by:
-			# TODO: Add resource links here.
-			# TODO: Explain why this is done before solve iterations.
-			for _iteration in range(iterations):
-				for index in range(positions.size() - 2):
-					var next_index = index + 1
-					var length = lengths[index]
-					var difference_between_bone_and_pole = pole.global_transform.origin - positions[next_index]
-					var clamped_distance_between_bone_and_pole = clamp(difference_between_bone_and_pole.length(), 0, length)
-					
-					# TODO: Explain why it's like this.					
-					positions[next_index] = positions[next_index] + (difference_between_bone_and_pole.normalized() * clamped_distance_between_bone_and_pole * 0.5)
+			# - https://gamedev.stackexchange.com/a/163474
+			# - https://github.com/jsantell/THREE.IK/issues/3#issuecomment-385537004
+			for index in range(positions.size() - 2):
+				var next_index = index + 1
+				var length = lengths[index]
+				var difference_between_bone_and_pole = pole.global_transform.origin - positions[next_index]
+				var clamped_distance_between_bone_and_pole = clamp(difference_between_bone_and_pole.length(), 0, length)
+				
+				# TODO: Explain why it's like this.					
+				positions[next_index] = positions[next_index] + (difference_between_bone_and_pole.normalized() * clamped_distance_between_bone_and_pole * 0.5)
 
 				
 		for _iteration in range(iterations):			
-					
 			# Go back through the chain, from leaf to root, to calculate the positions.
 			# Move the leaf bone to the target position.
 			positions[positions.size() - 1] = target.global_transform.origin
@@ -107,11 +95,14 @@ func solve() -> void:
 				
 				positions[next_index] = positions[current_index] + direction * length
 				
-				# TODO: Find a nice way to right the if statement and google this problem.
-				# If the direction is too staight, it cause the forward algo to not work correctly as 
-				# there needs to be some alight variation/bias in the direction.
+				# If the chain is a straight line (collinear) and the target is located on that line, then 
+				# the algorithm fails to bend the chain. Apparently This is a common problem of IK solvers 
+				# and the work around is random perturbation of a joint positions in the backwards phase.
+				# See: 3.3 of "Extending FABRIK with model constraints":
+				# - http://andreasaristidou.com/publications/papers/Extending_FABRIK_with_Model_C%CE%BFnstraints.pdf
+				# TODO: CHange this if statement to a real collinear check: https://math.stackexchange.com/a/635898
 				if direction == Vector3.RIGHT or direction == Vector3.LEFT or direction == Vector3.UP or direction == Vector3.DOWN or direction == Vector3.FORWARD or direction == Vector3.BACK:
-					positions[next_index]  = positions[next_index] + Vector3(rand_range(-0.001, 0.001), rand_range(-0.001, 0.001), rand_range(-0.001, 0.001))
+					positions[next_index]  = positions[next_index] + Vector3(rand_range(-0.01, 0.01), rand_range(-0.01, 0.01), rand_range(-0.01, 0.01))
 			
 			# Move the root bone to it's original position
 			positions[0] = bones[0].global_transform.origin
@@ -133,6 +124,10 @@ func solve() -> void:
 			else:
 				DebugDraw.draw_line_3d(positions[index - 1], positions[index], Color.white)
 	
+	
 	# Apply all the positions to the bones after calculation	
 	for index in range(positions.size()):
 		bones[index].global_transform.origin = positions[index]
+		
+		if index < positions.size() - 1:
+			bones[index].look_at(bones[index + 1].global_transform.origin, bones[index].global_transform.basis.y)
