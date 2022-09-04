@@ -4,66 +4,71 @@ export var debug: bool = false
 export var target_path: NodePath
 export var pole_path: NodePath
 export var iterations: int = 10;
-export var pole_enabled: bool = true
+export var pole_enabled: bool = false
 
 onready var target: Spatial = get_node(target_path)
 onready var pole: Spatial = get_node(pole_path)
 
-var distance_error: float = 1
+var tolerance: float = 0.002
 
-var is_error: bool = false
 var bones = []
 var positions = []
 var lengths = []
 var total_length: float = 0
+var allow_reach: bool = false
 
 func _ready() -> void:
 	bones = get_children()
 	
+	if is_error():
+		set_process(false)
+		return
+	
 	for index in range(bones.size()):
 		var bone = bones[index]
+		
 		positions.append(bone.global_transform.origin)
 
 		if index > 0:
 			var distance = bones[index - 1].global_transform.origin.distance_to(bones[index].global_transform.origin)
-			lengths.append(distance)
-			print(distance)
+			
 			total_length = total_length + distance
+			lengths.append(distance)
 
 func _process(_delta: float) -> void:	
-	if is_error:
-		return
+	solve()
+
+func is_error() -> bool:
+	if bones.empty():
+		print("IK: No children, no bones!")
+		return true
 		
 	if !target_path:
 		print("IK: No target path set")
-		is_error = true
-		return
+		return true
 		
 	if pole_enabled and !pole_path:
 		print("IK: No pole path set")
-		is_error = true
-		return
+		return true
 		
-	if bones.empty():
-		print("IK: No children, no bones!")
-		is_error = true
-		return
-	
-	solve()
+	return false
 
-func solve() -> void:
+func solve() -> void:	
 	# Get positions of all bones.
 	for index in range(bones.size()):
 		positions[index] = bones[index].global_transform.origin
-		
+	
+	var last_leaf_position = positions[positions.size() - 1]
+	
 	# If the target distance is greater than the total length then move all
 	# bones towards the target except the first bone.
 	## TODO: Work out why this is so snappy! Need to use distance_error to reduce snappy-ness
-	if positions[0].distance_to(target.global_transform.origin) >= total_length + distance_error:
+	if allow_reach and positions[0].distance_to(target.global_transform.origin) >= total_length:
 		var direction = positions[0].direction_to(target.global_transform.origin)
 
 		for index in range(1, positions.size()):
 			positions[index] = positions[index - 1] + (direction * lengths[index - 1])
+			
 	else:
 		# TODO: Explain why pole is done before solve iterations.
 		if pole_enabled:
@@ -78,10 +83,9 @@ func solve() -> void:
 				var clamped_distance_between_bone_and_pole = clamp(difference_between_bone_and_pole.length(), 0, length)
 				
 				# TODO: Explain why it's like this.					
-				positions[next_index] = positions[next_index] + (difference_between_bone_and_pole.normalized() * clamped_distance_between_bone_and_pole * 0.5)
-
-				
-		for _iteration in range(iterations):			
+				positions[next_index] = positions[next_index] + (difference_between_bone_and_pole.normalized() * clamped_distance_between_bone_and_pole)
+		
+		for _iteration in range(iterations):				
 			# Go back through the chain, from leaf to root, to calculate the positions.
 			# Move the leaf bone to the target position.
 			positions[positions.size() - 1] = target.global_transform.origin
@@ -115,6 +119,11 @@ func solve() -> void:
 				var length = lengths[current_index]
 		
 				positions[next_index] = positions[current_index] + direction * length
+		
+		# TODO: This bit is inspired by the original FABRIK paper, but I don't think I've implemented it correctly.
+		# It's suposed to stop the snappy-ness. It works for when the target moves away, but does not work for moving in.
+		allow_reach = last_leaf_position.distance_to(positions[positions.size() - 1]) < tolerance
+		last_leaf_position = positions[positions.size() - 1]
 	
 	if debug:
 		for index in range(1, positions.size()):		
@@ -124,10 +133,13 @@ func solve() -> void:
 			else:
 				DebugDraw.draw_line_3d(positions[index - 1], positions[index], Color.white)
 	
-	
 	# Apply all the positions to the bones after calculation	
 	for index in range(positions.size()):
-		bones[index].global_transform.origin = positions[index]
-		
+		# TODO: Find out how to do rotation correctly. It seems pretty correct but lags a bit. Less lag if using postions[index + 1].
+		# - https://github.com/liviusgrosu/Fabrik-Inverse-Kinematics-Spider/blob/main/Assets/Resources/Scripts/FastIKFabric.cs#L188-L196
+		# - https://github.com/ToughNutToCrack/InverseKinematics-intro/blob/master/Assets/Scripts/Dragon/SimplifiedIK.cs
+		# - https://github.com/godotengine/godot-demo-projects/blob/master/3d/ik/addons/sade/ik_fabrik.gd#L264
 		if index < positions.size() - 1:
-			bones[index].look_at(bones[index + 1].global_transform.origin, bones[index].global_transform.basis.y)
+			bones[index].look_at(positions[index + 1], Vector3.UP)
+			
+		bones[index].global_transform.origin = positions[index]

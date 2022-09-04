@@ -8,8 +8,8 @@ export var pole_enabled: bool = true
 export var speed: float = 0.4
 
 onready var ik: Spatial = $IK
-onready var foot: Spatial = $Foot
-onready var pole: Spatial = $Pole
+onready var foot: MeshInstance = $Foot
+onready var pole: MeshInstance = $Pole
 onready var raycast: RayCast = $RayCast
 onready var home: Position3D = $HomePosition
 

@@ -54,6 +54,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.38849, -0.153627, 0.31282 )
 debug = true
 target_path = NodePath("../Target")
 pole_path = NodePath("../Pole")
+pole_enabled = true
 
 [node name="Joint1" parent="IK" instance=ExtResource( 1 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2, 0, 0 )

@@ -4,11 +4,11 @@
 [ext_resource path="res://entities/Spider/Leg.gd" type="Script" id=3]
 [ext_resource path="res://entities/IK/IK.tscn" type="PackedScene" id=4]
 
-[sub_resource type="SphereMesh" id=14]
+[sub_resource type="SphereMesh" id=17]
 radius = 0.05
 height = 0.1
 
-[sub_resource type="CubeMesh" id=15]
+[sub_resource type="CubeMesh" id=18]
 size = Vector3( 0.2, 0.2, 0.2 )
 
 [node name="Leg" type="Spatial"]
@@ -19,19 +19,23 @@ transform = Transform( 0.89449, 0.447087, 0, -0.447087, 0.89449, 0, 0, 0, 1, 0.6
 enabled = true
 cast_to = Vector3( 0, -1.5, 0 )
 
-[node name="Foot" type="MeshInstance" parent="."]
-transform = Transform( 1.5253, 0, 0, 0, 1.5253, 0, 0, 0, 1.5253, 0.660951, -1.4308, 0 )
-mesh = SubResource( 14 )
-skeleton = NodePath("../RayCast")
-
-[node name="Pole" type="MeshInstance" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.861376, 0.778138, 0 )
-visible = false
-mesh = SubResource( 14 )
-skeleton = NodePath("../RayCast")
-
 [node name="HomePosition" type="Position3D" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.508112, -0.770687, 0 )
+
+[node name="Foot" type="Position3D" parent="."]
+transform = Transform( 1.5253, 0, 0, 0, 1.5253, 0, 0, 0, 1.5253, 0.660951, -1.4308, 0 )
+
+[node name="Foot" type="MeshInstance" parent="Foot"]
+mesh = SubResource( 17 )
+skeleton = NodePath("../../RayCast")
+
+[node name="Pole" type="Position3D" parent="."]
+transform = Transform( 1.5253, 0, 0, 0, 1.5253, 0, 0, 0, 1.5253, 0.660951, -1.4308, 0 )
+
+[node name="Pole" type="MeshInstance" parent="Pole"]
+transform = Transform( 0.655609, 0, 0, 0, 0.655609, 0, 0, 0, 0.655609, 0.111983, 1.46366, -0.00279325 )
+mesh = SubResource( 17 )
+skeleton = NodePath("../../RayCast")
 
 [node name="IK" parent="." instance=ExtResource( 4 )]
 debug = true
@@ -44,7 +48,7 @@ show_axis = false
 
 [node name="MeshInstance2" type="MeshInstance" parent="IK/Joint1"]
 transform = Transform( 1, 0, 5.19934e-07, 0, 1, 0, 5.19934e-07, 0, 12.8947, -5.51038e-08, 0, -1.26063 )
-mesh = SubResource( 15 )
+mesh = SubResource( 18 )
 
 [node name="Joint2" parent="IK" instance=ExtResource( 2 )]
 transform = Transform( -8.74228e-09, 0, -0.2, 0, 0.2, 0, 0.2, 0, -8.74228e-09, 0.5, 0, 0 )
@@ -52,7 +56,7 @@ show_axis = false
 
 [node name="MeshInstance3" type="MeshInstance" parent="IK/Joint2"]
 transform = Transform( 1, 0, 5.19934e-07, 0, 1, 0, 5.19934e-07, 0, 12.8947, -5.73991e-08, 0, -1.31314 )
-mesh = SubResource( 15 )
+mesh = SubResource( 18 )
 skeleton = NodePath("../../Joint1")
 
 [node name="Joint4" parent="IK" instance=ExtResource( 2 )]
@@ -61,7 +65,7 @@ show_axis = false
 
 [node name="MeshInstance3" type="MeshInstance" parent="IK/Joint4"]
 transform = Transform( 1, 0, 5.19934e-07, 0, 1, 0, 5.19934e-07, 0, 12.8947, -5.73991e-08, 0, -1.31314 )
-mesh = SubResource( 15 )
+mesh = SubResource( 18 )
 skeleton = NodePath("../../Joint1")
 
 [node name="Joint3" parent="IK" instance=ExtResource( 2 )]
