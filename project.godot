@@ -21,8 +21,12 @@ _global_script_class_icons={
 [application]
 
 config/name="211107_godot_fps_staircase"
-run/main_scene="res://empty.tscn"
+run/main_scene="res://scenes/empty.tscn"
 config/icon="res://icon.png"
+
+[audio]
+
+default_bus_layout="res://scenes/default/default_bus_layout.tres"
 
 [autoload]
 
@@ -134,4 +138,4 @@ common/enable_pause_aware_picking=true
 
 [rendering]
 
-environment/default_environment="res://default_env.tres"
+environment/default_environment="res://scenes/default/default_env.tres"

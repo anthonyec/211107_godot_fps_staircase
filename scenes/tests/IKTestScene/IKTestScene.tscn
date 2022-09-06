@@ -1,0 +1,129 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://entities/EntityTester/EntityTester.tscn" type="PackedScene" id=1]
+[ext_resource path="res://entities/Joint/Joint.tscn" type="PackedScene" id=2]
+[ext_resource path="res://entities/IK/IK.tscn" type="PackedScene" id=3]
+
+[sub_resource type="CubeMesh" id=1]
+size = Vector3( 0.2, 0.2, 0.2 )
+
+[sub_resource type="SphereMesh" id=2]
+radius = 0.1
+height = 0.2
+
+[sub_resource type="PlaneMesh" id=3]
+
+[sub_resource type="Animation" id=4]
+resource_name = "test2"
+length = 18.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Pole:translation")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 2, 4, 6, 8, 10, 12, 14, 16.1 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( -3.58034, -0.000745773, -1.44528 ), Vector3( -0.590855, -0.000745773, -1.44528 ), Vector3( -1.33823, -0.000745773, 2.06046 ), Vector3( -3.40106, -0.000745773, 1.90032 ), Vector3( -3.58034, -0.000745773, -1.44528 ), Vector3( -3.66301, 1.16143, -1.68052 ), Vector3( -0.154441, 1.29612, 1.99883 ), Vector3( -0.329542, -1.5134, 2.11476 ), Vector3( -3.45225, -1.59699, -1.89783 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Target:translation")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 2, 4, 6, 8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( -3.10965, -0.176063, 0.310645 ), Vector3( -5.03753, -0.176063, 0.310645 ), Vector3( -3.84956, -0.176063, -2.30239 ), Vector3( -2.10866, 1.50846, -0.00146961 ), Vector3( -2.10609, -1.25873, 2.16195 ) ]
+}
+
+[sub_resource type="Animation" id=5]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Pole:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( -0.686627, -0.000745773, -1.44528 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Target:translation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( -3.10965, -0.176063, 0.310645 ) ]
+}
+
+[node name="IKTestScene" type="Spatial"]
+
+[node name="EntityTester" parent="." instance=ExtResource( 1 )]
+show_floor = false
+
+[node name="IK" parent="EntityTester" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 0 )
+debug = true
+target_path = NodePath("../Target")
+pole_path = NodePath("../Pole")
+pole_enabled = true
+
+[node name="Joint1" parent="EntityTester/IK" instance=ExtResource( 2 )]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2, 0, 0 )
+
+[node name="MeshInstance2" type="MeshInstance" parent="EntityTester/IK/Joint1"]
+transform = Transform( -4.96917e-07, 0, -1, 0, 1, 0, 11.3681, 0, -4.37114e-08, -0.010742, 0, -1.12694 )
+mesh = SubResource( 1 )
+
+[node name="Joint2" parent="EntityTester/IK" instance=ExtResource( 2 )]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0 )
+
+[node name="MeshInstance3" type="MeshInstance" parent="EntityTester/IK/Joint2"]
+transform = Transform( -3.02793e-07, 0, -1, 0, 1, 0, 6.92711, 0, -4.37114e-08, -0.00935835, 0, -0.725471 )
+mesh = SubResource( 1 )
+skeleton = NodePath("../../Joint1")
+
+[node name="Joint3" parent="EntityTester/IK" instance=ExtResource( 2 )]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -1.35539, 0, 5.96046e-08 )
+
+[node name="MeshInstance4" type="MeshInstance" parent="EntityTester/IK/Joint3"]
+transform = Transform( -1.82493e-07, 0, -1, 0, 1, 0, 4.17496, 0, -4.37114e-08, -0.0202469, 0, -0.459511 )
+mesh = SubResource( 1 )
+skeleton = NodePath("../../Joint1")
+
+[node name="Joint4" parent="EntityTester/IK" instance=ExtResource( 2 )]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -2.24531, 0, 0 )
+
+[node name="Target" type="Position3D" parent="EntityTester"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.10965, -0.176063, 0.310645 )
+
+[node name="MeshInstance" type="MeshInstance" parent="EntityTester/Target"]
+mesh = SubResource( 2 )
+
+[node name="Pole" type="Position3D" parent="EntityTester"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.686627, -0.000745773, -1.44528 )
+
+[node name="MeshInstance" type="MeshInstance" parent="EntityTester/Pole"]
+mesh = SubResource( 2 )
+
+[node name="Wall" type="MeshInstance" parent="EntityTester"]
+transform = Transform( -1.29734e-07, -2.96796, 0, 2.96796, -1.29734e-07, 0, 0, 0, 2.96796, 0, 0, 0 )
+mesh = SubResource( 3 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="EntityTester"]
+autoplay = "IKtest2"
+anims/IKtest2 = SubResource( 4 )
+anims/RESET = SubResource( 5 )

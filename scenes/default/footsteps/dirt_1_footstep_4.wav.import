@@ -1,0 +1,23 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/dirt_1_footstep_4.wav-292aaf5a01cd276b2669122b38d216fd.sample"
+
+[deps]
+
+source_file="res://scenes/default/footsteps/dirt_1_footstep_4.wav"
+dest_files=[ "res://.import/dirt_1_footstep_4.wav-292aaf5a01cd276b2669122b38d216fd.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=true
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=true
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

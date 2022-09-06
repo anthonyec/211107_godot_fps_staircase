@@ -5,8 +5,10 @@ export var jump_strength: float = 6
 export var gravity: float = 20
 export var rotation_speed: float = 2
 
-var leg_pairs: Spatial
+onready var sphere_cast: Spatial = $SphereCast
+onready var body: Spatial = $Body
 
+var leg_pairs: Spatial
 var snap_vector: Vector3 = Vector3.DOWN
 var move_velocity: Vector3 = Vector3.ZERO
 
@@ -20,7 +22,7 @@ func transform_direction_to_camera_angle(direction: Vector3) -> Vector3:
 func _ready() -> void:
 	leg_pairs = get_node("%Legs")
 
-func _physics_process(delta: float) -> void:
+func _physics_process(delta: float) -> void:	
 	var input_direction: Vector2 = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	var rotation_direction: float = Input.get_action_strength("rotate_right") - Input.get_action_strength("rotate_left")
 	
@@ -30,6 +32,11 @@ func _physics_process(delta: float) -> void:
 
 	move_velocity.x = direction.x * speed
 	move_velocity.z = direction.z * speed
+	
+#	if sphere_cast.is_colliding:
+#		move_velocity -= sphere_cast.average_normal * gravity * 2 * delta
+#	else:
+#		print("OH")
 	move_velocity.y -= gravity * delta
 
 	var just_landed = is_on_floor() and snap_vector == Vector3.ZERO
@@ -49,3 +56,9 @@ func _physics_process(delta: float) -> void:
 	for leg_pair in leg_pairs.get_children():
 		for leg in leg_pair.get_children():
 			leg.added_velocity = move_velocity_without_gravity
+			
+	for index in get_slide_count():
+		var collision = get_slide_collision(index)
+		
+		DebugDraw.draw_box(collision.position, Vector3(0.1, 0.1, 0.1), Color.red)
+#		print(collision.collider.name)

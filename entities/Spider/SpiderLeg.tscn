@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://entities/Spider/SingleLeg.gd" type="Script" id=1]
-[ext_resource path="res://entities/IK/Joint.tscn" type="PackedScene" id=2]
+[ext_resource path="res://entities/Joint/Joint.tscn" type="PackedScene" id=2]
 [ext_resource path="res://entities/IK/IK.tscn" type="PackedScene" id=3]
 
 [sub_resource type="SphereMesh" id=17]
