@@ -58,8 +58,6 @@ func _apply_directional_movement(delta: float) -> void:
 	# TODO: Make this work for real with friction and stuff.
 	relative_direction.y -= gravity
 	
-	print(move_velocity)
-
 	move_and_slide(relative_direction, Vector3.UP)
 
 func _jump() -> void:

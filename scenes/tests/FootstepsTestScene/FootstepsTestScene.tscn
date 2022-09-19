@@ -1,0 +1,60 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://entities/EntityTester/EntityTester.tscn" type="PackedScene" id=1]
+[ext_resource path="res://entities/Footsteps/Footsteps.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/tests/FootstepsTestScene/VisualiseSineWave.gd" type="Script" id=3]
+
+[sub_resource type="SphereMesh" id=1]
+radius = 0.5
+height = 1.0
+
+[sub_resource type="Animation" id=2]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Blob:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0.6, 0 ) ]
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "walk_around"
+length = 8.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Blob:translation")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 5, 7 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0.6, 0 ), Vector3( 0, 0.6, -0.81006 ), Vector3( 0, 0.6, -3.50148 ) ]
+}
+
+[node name="FootstepsTestScene" type="Spatial"]
+
+[node name="EntityTester" parent="." instance=ExtResource( 1 )]
+
+[node name="Blob" type="MeshInstance" parent="EntityTester"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0 )
+mesh = SubResource( 1 )
+skeleton = NodePath("Footsteps")
+
+[node name="Footsteps" parent="EntityTester/Blob" instance=ExtResource( 2 )]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="EntityTester"]
+autoplay = "walk_around"
+anims/RESET = SubResource( 2 )
+anims/walk_around = SubResource( 3 )
+
+[node name="VisualiseSineWave" type="Spatial" parent="EntityTester"]
+script = ExtResource( 3 )
