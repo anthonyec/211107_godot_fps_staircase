@@ -11,7 +11,7 @@ var direction: float = 1
 var previous_value: float = 0
 var wave: float = 0
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if paused:
 		return
 	
@@ -31,5 +31,5 @@ func _process(delta: float) -> void:
 		
 	previous_value = wave
 	
-func peaked(wave: float) -> void: 
-	emit_signal("peaked", wave)
+func peaked(value: float) -> void: 
+	emit_signal("peaked", value)

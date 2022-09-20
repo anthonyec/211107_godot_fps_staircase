@@ -9,6 +9,8 @@ export var step_height: float = 0.6
 onready var foot: Spatial = $Foot
 onready var home: Position3D = $Home
 onready var homeRaycast: RayCast = $HomeRayCast
+onready var velocity: Spatial = $VelocitySensor
+onready var sound: Spatial = $LegSound
 
 var state: String = "plant"
 var elapsed_time: float = 0
@@ -20,6 +22,8 @@ var local_original_home_raycast_position: Vector3 = Vector3.ZERO
 # Variables used in states.
 var start_foot_position: Vector3 = Vector3.ZERO
 var last_position: Vector3 = Vector3.ZERO
+var end_position_to_use_as_plant: Vector3 = Vector3.ZERO
+var velocity_going_into_move: Vector3 = Vector3.ZERO
 
 func _ready() -> void:
 	local_original_home_raycast_position = homeRaycast.transform.origin
@@ -34,10 +38,9 @@ func quadratic_bezier(p0: Vector3, p1: Vector3, p2: Vector3, t: float) -> Vector
 func _process(_delta: float) -> void:	
 	if debug:
 		DebugDraw.draw_ray_3d(global_transform.origin, added_velocity, added_velocity.length(), Color.red)
-	
+		
 	if state == "plant":
 		var distance_from_home = plant_foot_position.distance_to(home.global_transform.origin)
-		
 		foot.global_transform.origin = plant_foot_position
 		
 		if distance_from_home > want_to_step_distance and is_allowed_to_move:
@@ -45,19 +48,22 @@ func _process(_delta: float) -> void:
 	
 	if state == "start_move":
 			start_foot_position = foot.global_transform.origin
+			velocity_going_into_move = (velocity.direction * (velocity.meters_per_second * move_duration)) * 0.5 # Magic number to half the velocity to avoid leg bounce.
 			state = "moving"
 			
 	if state == "end_move":
 			elapsed_time = 0
-			plant_foot_position = homeRaycast.get_collision_point()
+			plant_foot_position = end_position_to_use_as_plant
 			homeRaycast.transform.origin = local_original_home_raycast_position
+			sound.pitch_scale = rand_range(1.5, 2)
+			sound.play()
 			state = "plant"
 	
 	if state == "moving":
 		elapsed_time = elapsed_time + get_process_delta_time();
 		
 		var normalized_time = elapsed_time / move_duration
-		var end_position = homeRaycast.get_collision_point()
+		var end_position = homeRaycast.get_collision_point() + (velocity_going_into_move)
 		var center_point = ((start_foot_position + end_position) / 2) + (Vector3.UP * step_height)
 		
 		foot.global_transform.origin = quadratic_bezier(start_foot_position, center_point, end_position, normalized_time)
@@ -67,5 +73,6 @@ func _process(_delta: float) -> void:
 			DebugDraw.draw_box(center_point, Vector3(0.1, 0.1, 0.1), Color.green)
 			DebugDraw.draw_box(end_position, Vector3(0.1, 0.1, 0.1), Color.blue)
 		
-		if elapsed_time >= move_duration or foot.global_transform.origin.distance_to(end_position) < 0.08:
+		if elapsed_time >= move_duration or foot.global_transform.origin.distance_to(end_position) < 0.1:
+			end_position_to_use_as_plant = end_position
 			state = "end_move"

@@ -1,8 +1,10 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://entities/Spider/SingleLeg.gd" type="Script" id=1]
 [ext_resource path="res://entities/Joint/Joint.tscn" type="PackedScene" id=2]
 [ext_resource path="res://entities/IK/IK.tscn" type="PackedScene" id=3]
+[ext_resource path="res://entities/VelocitySensor/VelocitySensor.tscn" type="PackedScene" id=4]
+[ext_resource path="res://entities/Footsteps/audio/wood_1/wood_1_footstep_1.wav" type="AudioStream" id=5]
 
 [sub_resource type="SphereMesh" id=17]
 radius = 0.05
@@ -17,6 +19,8 @@ script = ExtResource( 1 )
 debug = true
 want_to_step_distance = 0.5
 
+[node name="VelocitySensor" parent="." instance=ExtResource( 4 )]
+
 [node name="HomeRayCast" type="RayCast" parent="."]
 transform = Transform( 0.999999, 0, 0, 0, 1, 0, 0, 0, 1, -1.05212e-08, -1.70286e-08, -0.625109 )
 enabled = true
@@ -24,6 +28,12 @@ cast_to = Vector3( 0, -1.5, 0 )
 
 [node name="Home" type="Position3D" parent="."]
 transform = Transform( 0.999999, 0, 3.55271e-15, 0, 1, 0, -3.55271e-15, 0, 0.999999, -1.05212e-08, -0.6, -0.623994 )
+
+[node name="Home" type="MeshInstance" parent="Home"]
+transform = Transform( 1.5253, 0, 2.13163e-14, 0, 1.5253, 0, -2.13163e-14, 0, 1.5253, 0, 0.254671, 0 )
+visible = false
+mesh = SubResource( 17 )
+skeleton = NodePath("")
 
 [node name="Foot" type="MeshInstance" parent="."]
 transform = Transform( 1.5253, 0, 7.10543e-15, 0, 1.5253, 0, -7.10543e-15, 0, 1.5253, 0, -0.636709, -0.379811 )
@@ -69,3 +79,8 @@ mesh = SubResource( 18 )
 [node name="Joint3" parent="IK" instance=ExtResource( 2 )]
 transform = Transform( -8.74228e-09, 0.2, 8.74228e-09, 0, -8.74228e-09, 0.2, 0.2, 8.74228e-09, 3.82137e-16, 0, 0, -1.16946 )
 show_axis = false
+
+[node name="LegSound" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource( 5 )
+unit_size = 0.1
+pitch_scale = 5.0

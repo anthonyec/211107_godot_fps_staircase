@@ -20,11 +20,11 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id=2]
 resource_name = "single_leg_test"
-length = 4.0
+length = 8.0
 loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("SpiderLeg:translation")
-tracks/0/interp = 1
+tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true

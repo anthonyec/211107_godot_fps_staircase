@@ -20,14 +20,21 @@ func transform_direction_to_camera_angle(direction: Vector3) -> Vector3:
 func _ready() -> void:
 	leg_pairs = get_node("%Legs")
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	var input_direction: Vector2 = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	var direction = Vector3(input_direction.x, 0, input_direction.y)
 	
 	direction.y = direction.y - gravity
+	direction = direction.rotated(Vector3.UP, global_transform.basis.get_euler().y)
 	
-	var velocity = move_and_slide(direction, Vector3.UP, true)
+	if Input.is_action_pressed("jump"):
+		print("jump")
+		direction.y = direction.y + 100
+		
+	if Input.is_action_pressed("rotate_left"):
+		rotate(Vector3.UP, deg2rad(1))
+		
+	if Input.is_action_pressed("rotate_right"):
+		rotate(Vector3.UP, deg2rad(-1))
 	
-#	for leg_pair in leg_pairs.get_children():
-#		for leg in leg_pair.get_children():
-#			leg.added_velocity = velocity
+	var _velocity = move_and_slide(direction, Vector3.UP, true)

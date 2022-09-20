@@ -15,7 +15,10 @@ func _ready() -> void:
 	for child in get_children():
 		if !(child as Oscillator) and (child as SpiderLeg):
 			legs.append(child)
-
+	
+	if legs.size() == 0:
+		print("No legs found as children. Make sure legs have a class_name of 'SpiderLeg' and are direct children of a LegPair.")
+		set_process(false)
 
 func _process(_delta: float) -> void:
 	var target_leg = legs[active_leg_index]	
@@ -29,3 +32,5 @@ func _on_oscillator_peaked(_wave: float) -> void:
 		active_leg_index = 1
 	else:
 		active_leg_index = 0
+
+
