@@ -1,16 +1,16 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://entities/Footsteps/Footsteps.gd" type="Script" id=1]
-[ext_resource path="res://entities/CycleOscillator/CycleOscillator.tscn" type="PackedScene" id=2]
+[ext_resource path="res://entities/Oscillator/Oscillator.tscn" type="PackedScene" id=2]
 
 [node name="Footsteps" type="RayCast"]
 enabled = true
 script = ExtResource( 1 )
 
-[node name="CycleOscillator" parent="." instance=ExtResource( 2 )]
+[node name="Oscillator" parent="." instance=ExtResource( 2 )]
 
 [node name="FootstepSoundLeft" type="AudioStreamPlayer3D" parent="."]
 
 [node name="FootstepSoundRight" type="AudioStreamPlayer3D" parent="."]
 
-[connection signal="peaked" from="CycleOscillator" to="." method="_on_WalkCycleOscillator_peaked"]
+[connection signal="peaked" from="Oscillator" to="." method="_on_oscillator_peaked"]
