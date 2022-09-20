@@ -1,3 +1,4 @@
+class_name Oscillator
 extends Spatial
 
 signal peaked(wave)
@@ -26,7 +27,7 @@ func _process(delta: float) -> void:
 		
 	if direction == -1 and previous_value < wave:
 		direction = 1
-		peaked(-wave)
+		peaked(wave)
 		
 	previous_value = wave
 	

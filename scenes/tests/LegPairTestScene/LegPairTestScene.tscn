@@ -1,0 +1,56 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://entities/Spider/SpiderLeg.tscn" type="PackedScene" id=1]
+[ext_resource path="res://entities/EntityTester/EntityTester.tscn" type="PackedScene" id=2]
+[ext_resource path="res://entities/Spider/LegPair.tscn" type="PackedScene" id=3]
+
+[sub_resource type="Animation" id=1]
+length = 5.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("LegPair:translation")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0, -3.13926 ) ]
+}
+
+[sub_resource type="Animation" id=2]
+resource_name = "single_leg_test"
+length = 4.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("LegPair/SpiderLeg:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0.5, 0 ), Vector3( 0, 0.5, -4 ) ]
+}
+
+[node name="Spatial" type="Spatial"]
+
+[node name="EntityTesterScene" parent="." instance=ExtResource( 2 )]
+
+[node name="LegPair" parent="EntityTesterScene" instance=ExtResource( 3 )]
+
+[node name="SpiderLeg" parent="EntityTesterScene/LegPair" instance=ExtResource( 1 )]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0.0398654, 0.820202, 0 )
+
+[node name="SpiderLeg2" parent="EntityTesterScene/LegPair" instance=ExtResource( 1 )]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -0.0422233, 0.820202, 0 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="EntityTesterScene"]
+autoplay = "RESET"
+playback_speed = 0.5
+anims/RESET = SubResource( 1 )
+anims/single_leg_test = SubResource( 2 )

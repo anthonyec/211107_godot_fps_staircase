@@ -2,22 +2,30 @@ extends Spatial
 
 export var start_index: int = 0
 
-var skip_frame: bool = false
-var check_index: int = 0
+onready var oscillator: Spatial = $Oscillator
+
+var active_leg_index: int = 0
+var legs = []
 
 func _ready() -> void:
-	check_index = start_index
+	active_leg_index = start_index
 	
-	if get_child_count() != 2:
-		set_process(false)
+	oscillator.frequency = 5
+	
+	for child in get_children():
+		if !(child as Oscillator) and (child as SpiderLeg):
+			legs.append(child)
+
 
 func _process(_delta: float) -> void:
-	var leg_to_check = get_child(check_index)
+	var target_leg = legs[active_leg_index]	
+	var other_leg = legs[active_leg_index ^ 1]
 	
-	get_child(check_index ^ 1).is_allowed_to_move = false
-	leg_to_check.is_allowed_to_move = get_child(check_index ^ 1).state == "plant"
-	
-	check_index = check_index + 1
-	
-	if check_index > get_child_count() - 1:
-		check_index = 0
+	other_leg.is_allowed_to_move = false
+	target_leg.is_allowed_to_move = other_leg.state == "plant"
+
+func _on_oscillator_peaked(_wave: float) -> void:
+	if active_leg_index == 0:
+		active_leg_index = 1
+	else:
+		active_leg_index = 0

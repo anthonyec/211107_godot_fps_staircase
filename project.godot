@@ -13,9 +13,21 @@ _global_script_classes=[ {
 "class": "CSGPlusStaircase",
 "language": "GDScript",
 "path": "res://addons/csg_plus/csg_plus_staircase.gd"
+}, {
+"base": "Spatial",
+"class": "Oscillator",
+"language": "GDScript",
+"path": "res://entities/Oscillator/Oscillator.gd"
+}, {
+"base": "Spatial",
+"class": "SpiderLeg",
+"language": "GDScript",
+"path": "res://entities/Spider/SingleLeg.gd"
 } ]
 _global_script_class_icons={
-"CSGPlusStaircase": ""
+"CSGPlusStaircase": "",
+"Oscillator": "",
+"SpiderLeg": ""
 }
 
 [application]

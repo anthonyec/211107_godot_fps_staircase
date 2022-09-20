@@ -1,3 +1,4 @@
+class_name SpiderLeg
 extends Spatial
 
 export var debug: bool = false
