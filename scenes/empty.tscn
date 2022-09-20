@@ -1,7 +1,6 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://scenes/default/pause.gd" type="Script" id=1]
-[ext_resource path="res://entities/WalkCycleOscillator/WalkCycleOscillator.tscn" type="PackedScene" id=2]
 [ext_resource path="res://addons/kenney_prototype_textures/dark/texture_08.png" type="Texture" id=3]
 [ext_resource path="res://entities/Spider/Spider.gd" type="Script" id=4]
 [ext_resource path="res://addons/csg_plus/csg_plus_staircase.gd" type="Script" id=5]
@@ -412,5 +411,3 @@ use_collision = true
 [node name="CSGSphere3" type="CSGSphere" parent="."]
 transform = Transform( 1.15091, 0, 0, 0, 0.352011, 0, 0, 0, 1.15115, -5.35923, 0.210051, 0.784053 )
 use_collision = true
-
-[node name="WalkCycleOscillator" parent="." instance=ExtResource( 2 )]

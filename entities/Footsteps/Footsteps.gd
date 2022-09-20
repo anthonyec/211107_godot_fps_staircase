@@ -6,7 +6,7 @@ export var volume: float = 3
 
 onready var footstep_sound_left: AudioStreamPlayer3D = $FootstepSoundLeft
 onready var footstep_sound_right: AudioStreamPlayer3D = $FootstepSoundRight
-onready var oscillator: Spatial = $WalkCycleOscillator
+onready var oscillator: Spatial = $CycleOscillator
 onready var current_surface: String = default_surface
 
 var last_position: Vector3
@@ -37,13 +37,13 @@ func _process(delta: float) -> void:
 	var velocity = global_transform.origin.distance_to(last_position)
 	var meters_per_second = velocity / delta
 	
-	oscillator.paused = velocity < 0.01
+#	oscillator.paused = velocity < 0.01
 	
-#	print(meters_per_second)
-	
-	if not is_on_floor:
-		oscillator.reset_value()
-		
+#	print(meters_per_second)	
+#	var ratio = clamp(meters_per_second / 5, 0, 1)
+#	oscillator.period = lerp(1, 0.9, ratio)
+#	print(ratio, ": ", oscillator.period)
+
 	if is_colliding():
 		set_surface_from_collision()
 				
