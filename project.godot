@@ -44,6 +44,7 @@ default_bus_layout="res://scenes/default/default_bus_layout.tres"
 
 DebugDraw="*res://addons/zylann.debug_draw/debug_draw.gd"
 DebugGraph="*res://singletons/DebugGraph.gd"
+SFX="*res://singletons/SFX/SFX.gd"
 
 [input]
 

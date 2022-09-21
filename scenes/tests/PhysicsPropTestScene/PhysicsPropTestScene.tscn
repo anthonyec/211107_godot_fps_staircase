@@ -18,7 +18,6 @@ albedo_color = Color( 1, 1, 1, 0.619608 )
 [node name="PhysicsProp" parent="EntityTesterScene" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.80082, 0 )
 contacts_reported = 1
-contact_monitor = true
 
 [node name="CollisionShape" type="CollisionShape" parent="EntityTesterScene/PhysicsProp"]
 shape = SubResource( 3 )
@@ -30,7 +29,6 @@ material/0 = SubResource( 4 )
 [node name="PhysicsProp2" parent="EntityTesterScene" instance=ExtResource( 2 )]
 transform = Transform( 0.671164, 0.741309, 0, -0.741309, 0.671164, 0, 0, 0, 1, 0, 6.92383, -0.857868 )
 contacts_reported = 1
-contact_monitor = true
 
 [node name="CollisionShape" type="CollisionShape" parent="EntityTesterScene/PhysicsProp2"]
 shape = SubResource( 3 )
@@ -42,7 +40,6 @@ material/0 = SubResource( 4 )
 [node name="PhysicsProp3" parent="EntityTesterScene" instance=ExtResource( 2 )]
 transform = Transform( 0.671164, 0.741309, 0, -0.741309, 0.671164, 0, 0, 0, 1, 0, 10.6121, -0.857868 )
 contacts_reported = 1
-contact_monitor = true
 
 [node name="CollisionShape" type="CollisionShape" parent="EntityTesterScene/PhysicsProp3"]
 shape = SubResource( 3 )

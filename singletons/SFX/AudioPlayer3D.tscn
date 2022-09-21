@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="SphereMesh" id=1]
+radius = 0.25
+height = 0.5
+
+[node name="AudioPlayer3D" type="AudioStreamPlayer3D"]
+attenuation_filter_cutoff_hz = 20500.0
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+mesh = SubResource( 1 )

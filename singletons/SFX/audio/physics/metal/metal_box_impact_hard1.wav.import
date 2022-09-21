@@ -1,0 +1,23 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/metal_box_impact_hard1.wav-34ed285be5b15d98bf3c462320f6e23e.sample"
+
+[deps]
+
+source_file="res://singletons/SFX/audio/physics/metal/metal_box_impact_hard1.wav"
+dest_files=[ "res://.import/metal_box_impact_hard1.wav-34ed285be5b15d98bf3c462320f6e23e.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0
