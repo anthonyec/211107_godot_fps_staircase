@@ -30,4 +30,3 @@ mesh = SubResource( 6 )
 
 [node name="Footsteps" parent="." instance=ExtResource( 2 )]
 default_surface = "wood_1"
-volume = 1.0

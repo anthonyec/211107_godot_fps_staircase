@@ -4,6 +4,19 @@ extends Spatial
 export var show_floor: bool = true
 
 onready var scene_floor: Spatial = $Floor
+onready var toggle_slow_motion_buttin: Button = get_node("%ToggleSlowMotionButton")
+onready var reset_scene_button: Button = get_node("%ResetSceneButton")
 
 func _ready() -> void:
 	scene_floor.visible = show_floor
+	reset_scene_button.connect("button_up", self, "reset_scene")
+	toggle_slow_motion_buttin.connect("button_up", self, "toggle_slow_motion")
+	
+func reset_scene() -> void:
+	get_tree().reload_current_scene()
+	
+func toggle_slow_motion() -> void:
+	if Engine.time_scale == 1:
+		Engine.time_scale = 0.1
+	else:
+		Engine.time_scale = 1

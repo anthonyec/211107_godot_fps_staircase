@@ -15,8 +15,9 @@ func _process(_delta: float) -> void:
 	if paused:
 		return
 	
-	phase = phase + (frequency / 100);
-	wave = sin(phase * PI * 2);
+	phase = phase + (frequency / 100)
+	wave = sin(phase * PI * 2)
+
 	
 	# This is a workaround because the peak never falls exactly on the 
 	# amplitude, and I dont know how to fix it.

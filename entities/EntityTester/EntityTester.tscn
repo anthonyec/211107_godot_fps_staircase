@@ -8,12 +8,32 @@
 size = Vector2( 40, 40 )
 
 [sub_resource type="BoxShape" id=2]
-extents = Vector3( 20, 0.1, 20 )
+extents = Vector3( 18.924, 0.1, 20 )
 
 [node name="EntityTester" type="Spatial"]
+pause_mode = 2
 script = ExtResource( 2 )
 
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ToggleSlowMotionButton" type="Button" parent="CanvasLayer"]
+unique_name_in_owner = true
+margin_left = 15.3984
+margin_top = 13.0294
+margin_right = 151.398
+margin_bottom = 33.0294
+text = "Toggle slow motion"
+
+[node name="ResetSceneButton" type="Button" parent="CanvasLayer"]
+unique_name_in_owner = true
+margin_left = 15.9907
+margin_top = 43.5302
+margin_right = 151.991
+margin_bottom = 63.5302
+text = "Reset Scene"
+
 [node name="Camera" type="Camera" parent="."]
+pause_mode = 2
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 2 )
 script = ExtResource( 1 )
 

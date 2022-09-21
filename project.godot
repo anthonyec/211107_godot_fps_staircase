@@ -43,7 +43,7 @@ default_bus_layout="res://scenes/default/default_bus_layout.tres"
 [autoload]
 
 DebugDraw="*res://addons/zylann.debug_draw/debug_draw.gd"
-DebugGraph="*res://DebugGraph.gd"
+DebugGraph="*res://singletons/DebugGraph.gd"
 
 [input]
 
