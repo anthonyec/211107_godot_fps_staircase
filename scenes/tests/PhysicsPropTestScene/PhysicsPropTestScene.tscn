@@ -29,6 +29,7 @@ material/0 = SubResource( 4 )
 [node name="PhysicsProp2" parent="EntityTesterScene" instance=ExtResource( 2 )]
 transform = Transform( 0.671164, 0.741309, 0, -0.741309, 0.671164, 0, 0, 0, 1, 0, 6.92383, -0.857868 )
 contacts_reported = 1
+slide_sfx_name = "physics/plastic_box_scrape_smooth_loop2"
 
 [node name="CollisionShape" type="CollisionShape" parent="EntityTesterScene/PhysicsProp2"]
 shape = SubResource( 3 )

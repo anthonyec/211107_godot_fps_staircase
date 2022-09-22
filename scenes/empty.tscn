@@ -1,6 +1,7 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://scenes/default/pause.gd" type="Script" id=1]
+[ext_resource path="res://entities/PhysicsProp/PhysicsProp.tscn" type="PackedScene" id=2]
 [ext_resource path="res://addons/kenney_prototype_textures/dark/texture_08.png" type="Texture" id=3]
 [ext_resource path="res://entities/Spider/Spider.gd" type="Script" id=4]
 [ext_resource path="res://addons/csg_plus/csg_plus_staircase.gd" type="Script" id=5]
@@ -76,6 +77,12 @@ extents = Vector3( 25, 0.025, 25 )
 albedo_texture = ExtResource( 6 )
 uv1_triplanar = true
 
+[sub_resource type="BoxShape" id=19]
+extents = Vector3( 0.5, 0.5, 0.5 )
+
+[sub_resource type="CubeMesh" id=18]
+size = Vector3( 1, 1, 1 )
+
 [node name="Scene" type="Spatial"]
 
 [node name="Pause" type="Node" parent="."]
@@ -104,7 +111,7 @@ distance_from_target = 3.0
 [node name="Spider" type="KinematicBody" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.08681, 0.744153, -2.47599 )
 script = ExtResource( 4 )
-speed = 0.5
+speed = 0.0
 rotation_speed = 0.5
 
 [node name="CollisionShape" type="CollisionShape" parent="Spider"]
@@ -178,7 +185,7 @@ autoplay = "breath"
 anims/RESET = SubResource( 15 )
 anims/breath = SubResource( 16 )
 
-[node name="Ground3" type="RigidBody" parent="." groups=["dirt_1"]]
+[node name="Ground3" type="RigidBody" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 10.0264, 0.0742149, -0.00895977 )
 mode = 1
 
@@ -192,11 +199,11 @@ material = ExtResource( 7 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000617325, 0.000597477, -0.000333667 )
 shape = SubResource( 2 )
 
-[node name="Ground7" type="RigidBody" parent="." groups=["dirt_1"]]
+[node name="Ground7" type="RigidBody" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 10.0264, 0.151281, -4.08172 )
 mode = 1
 
-[node name="Mesh" type="CSGBox" parent="Ground7"]
+[node name="Mesh" type="CSGBox" parent="Ground7" groups=["wood_hard"]]
 transform = Transform( 1, 0, 0, 0, 3.00122, 0, 0, 0, 1, 0, 0, 0 )
 width = 12.0
 height = 0.05
@@ -207,7 +214,7 @@ material = ExtResource( 7 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000617027, -0.0263363, -0.000333786 )
 shape = SubResource( 2 )
 
-[node name="Ground4" type="RigidBody" parent="." groups=["wood_1"]]
+[node name="Ground4" type="RigidBody" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 10.0264, 0.0742149, 4.02187 )
 mode = 1
 
@@ -221,7 +228,7 @@ material = ExtResource( 7 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000617325, 0.000597477, -0.000333667 )
 shape = SubResource( 2 )
 
-[node name="Ground" type="RigidBody" parent="Ground4" groups=["wood_2"]]
+[node name="Ground" type="RigidBody" parent="Ground4" groups=["wood_soft"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10.0264, -0.0742149, -4.02187 )
 mode = 1
 
@@ -235,7 +242,7 @@ material = SubResource( 3 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000617325, 0.000597477, -0.000333667 )
 shape = SubResource( 4 )
 
-[node name="Ground5" type="RigidBody" parent="." groups=["water_1"]]
+[node name="Ground5" type="RigidBody" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 10.0264, 0.0742149, 8.02187 )
 mode = 1
 
@@ -249,7 +256,7 @@ material = ExtResource( 7 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000617325, 0.000597477, -0.000333667 )
 shape = SubResource( 2 )
 
-[node name="Ground6" type="RigidBody" parent="." groups=["metal_1"]]
+[node name="Ground6" type="RigidBody" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 10.0264, 0.0742149, 12.0474 )
 mode = 1
 
@@ -296,3 +303,30 @@ use_collision = true
 [node name="CSGSphere3" type="CSGSphere" parent="."]
 transform = Transform( 1.15091, 0, 0, 0, 0.352011, 0, 0, 0, 1.15115, -5.35923, 0.210051, 0.784053 )
 use_collision = true
+
+[node name="PhysicsProp" parent="." instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4142, 6.5864, -7.67196 )
+
+[node name="CollisionShape" type="CollisionShape" parent="PhysicsProp"]
+shape = SubResource( 19 )
+
+[node name="MeshInstance" type="MeshInstance" parent="PhysicsProp"]
+mesh = SubResource( 18 )
+
+[node name="PhysicsProp2" parent="." instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4142, 9.66845, -7.67196 )
+
+[node name="CollisionShape" type="CollisionShape" parent="PhysicsProp2"]
+shape = SubResource( 19 )
+
+[node name="MeshInstance" type="MeshInstance" parent="PhysicsProp2"]
+mesh = SubResource( 18 )
+
+[node name="PhysicsProp3" parent="." instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.75977, 9.66845, -14.3229 )
+
+[node name="CollisionShape" type="CollisionShape" parent="PhysicsProp3"]
+shape = SubResource( 19 )
+
+[node name="MeshInstance" type="MeshInstance" parent="PhysicsProp3"]
+mesh = SubResource( 18 )

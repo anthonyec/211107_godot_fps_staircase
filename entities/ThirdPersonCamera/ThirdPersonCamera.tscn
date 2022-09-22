@@ -14,6 +14,5 @@ margin = 1.0
 
 [node name="Camera" type="Camera" parent="Pivot/SpringArm"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10 )
-current = true
 near = 0.01
 far = 1000.0

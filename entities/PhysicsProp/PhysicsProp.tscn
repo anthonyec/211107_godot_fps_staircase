@@ -6,5 +6,6 @@
 contacts_reported = 3
 contact_monitor = true
 script = ExtResource( 1 )
+soft_impact_sfx_name = "physics/metal/metal_box_impact_soft{%n}"
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

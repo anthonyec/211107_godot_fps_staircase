@@ -28,7 +28,6 @@ func _process(_delta: float) -> void:
 	direction = direction.rotated(Vector3.UP, global_transform.basis.get_euler().y)
 	
 	if Input.is_action_pressed("jump"):
-		print("jump")
 		direction.y = direction.y + 100
 		
 	if Input.is_action_pressed("rotate_left"):

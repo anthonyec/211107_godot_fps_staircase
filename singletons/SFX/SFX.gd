@@ -71,6 +71,9 @@ func spawn_player(file: AudioStream, options = {}) -> AudioStreamPlayer3D:
 	if options.has("unit_db"):
 		player.unit_db = options["unit_db"]
 		
+	if options.has("pitch_scale"):
+		player.pitch_scale = options["pitch_scale"]
+		
 	if !options.has("loop"):
 		var _signal = timer.connect("timeout", self, "on_timer_end", [player])
 	

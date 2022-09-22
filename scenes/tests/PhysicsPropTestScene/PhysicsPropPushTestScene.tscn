@@ -29,6 +29,18 @@ shape = SubResource( 3 )
 mesh = SubResource( 2 )
 material/0 = SubResource( 5 )
 
+[node name="PhysicsProp2" parent="EntityTesterScene" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.31956, 10.8269, -5.51264 )
+contacts_reported = 1
+slide_sfx_name = "physics/plastic_box_scrape_smooth_loop2"
+
+[node name="CollisionShape" type="CollisionShape" parent="EntityTesterScene/PhysicsProp2"]
+shape = SubResource( 3 )
+
+[node name="MeshInstance" type="MeshInstance" parent="EntityTesterScene/PhysicsProp2/CollisionShape"]
+mesh = SubResource( 2 )
+material/0 = SubResource( 5 )
+
 [node name="CSGMesh" type="CSGMesh" parent="EntityTesterScene"]
 transform = Transform( 1, 0, 0, 0, 0.886341, -0.463033, 0, 0.463033, 0.886341, 0, 3.14144, 0 )
 use_collision = true
@@ -36,3 +48,5 @@ mesh = SubResource( 4 )
 
 [connection signal="body_exited" from="EntityTesterScene/PhysicsProp" to="EntityTesterScene/PhysicsProp" method="_on_body_exited"]
 [connection signal="sleeping_state_changed" from="EntityTesterScene/PhysicsProp" to="EntityTesterScene/PhysicsProp" method="_on_sleeping_state_changed"]
+[connection signal="body_exited" from="EntityTesterScene/PhysicsProp2" to="EntityTesterScene/PhysicsProp2" method="_on_body_exited"]
+[connection signal="sleeping_state_changed" from="EntityTesterScene/PhysicsProp2" to="EntityTesterScene/PhysicsProp2" method="_on_sleeping_state_changed"]
