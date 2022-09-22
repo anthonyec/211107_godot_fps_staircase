@@ -47,8 +47,8 @@ func _ready():
 	load_camera()
 	add_input_actions()
 
-	target_object = get_node(target_path)
-
+	target_object = get_node_or_null(target_path)
+	
 	if (target_object && target_position):
 		target_position = target_object.global_transform.origin
 		target_distance = target_position.distance_to(self.global_transform.origin)

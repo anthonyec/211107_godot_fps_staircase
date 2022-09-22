@@ -9,11 +9,11 @@ onready var reset_scene_button: Button = get_node("%ResetSceneButton")
 
 func _ready() -> void:
 	scene_floor.visible = show_floor
-	reset_scene_button.connect("button_up", self, "reset_scene")
-	toggle_slow_motion_buttin.connect("button_up", self, "toggle_slow_motion")
+	var _r = reset_scene_button.connect("button_up", self, "reset_scene")
+	var _t = toggle_slow_motion_buttin.connect("button_up", self, "toggle_slow_motion")
 	
 func reset_scene() -> void:
-	get_tree().reload_current_scene()
+	var _reloaded = get_tree().reload_current_scene()
 	
 func toggle_slow_motion() -> void:
 	if Engine.time_scale == 1:

@@ -58,15 +58,13 @@ func play_at_location(name: String, position: Vector3, options = {}) -> AudioStr
 	if options.has("unit_db"):
 		player.unit_db = options["unit_db"]
 	
-	timer.connect("timeout", player, "queue_free")
+	var _signal = timer.connect("timeout", player, "queue_free")
 	add_child(player)
 	
+	player.global_transform.origin = position
 	player.play()
 	
 	return player
-		
-func play_attached_to_object(node: Spatial) -> void:
-	pass
 
 func scan_directory(path: String, fileNameEndsWith: String = ""):
 	var results = []

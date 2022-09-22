@@ -16,9 +16,6 @@ var contact_local_position: Vector3 = Vector3.ZERO
 var last_contact_local_position: Vector3 = Vector3.ZERO
 var last_position: Vector3 = Vector3.ZERO
 
-func _physics_process(delta: float) -> void:
-	pass
-	
 func _process(delta: float) -> void:
 	DebugDraw.draw_ray_3d(global_transform.origin, linear_velocity.normalized(), linear_velocity.length(), Color.darkgreen)
 	DebugDraw.draw_ray_3d(global_transform.origin, contact_local_normal, 3, Color.blue)
@@ -53,10 +50,10 @@ func _integrate_forces( state ):
 		
 	contact_local_position = state.get_contact_local_position(0)
 
-func _on_body_entered(body: Node) -> void:
+func _on_body_entered(_body: Node) -> void:
 	var impact_ratio = clamp(linear_velocity.length() / max_linear_velocity, 0, 1)
 	
-	SFX.play_at_location("physics/metal/metal_box_impact_soft{%n}", global_transform.origin, {
+	var _sound = SFX.play_at_location("physics/metal/metal_box_impact_soft{%n}", global_transform.origin, {
 		"unit_db": lerp(-10, 20, impact_ratio)
 	})
 	
@@ -64,5 +61,5 @@ func _on_body_entered(body: Node) -> void:
 	
 	slide_sound.play()
 
-func _on_body_exited(body: Node) -> void:
+func _on_body_exited(_body: Node) -> void:
 	pass
