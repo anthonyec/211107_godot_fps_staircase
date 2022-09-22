@@ -31,23 +31,36 @@ func _ready():
 			sounds[name_without_number_suffix].append(load(result))
 	
 	loaded = true
+	
+func create(name: String, options = {}) -> AudioStreamPlayer3D:
+	if !sounds.has(name.trim_suffix("{%n}")):
+		print("SFX: The sound called '", name, "' does not exist.")
+		return AudioStreamPlayer3D.new()
+		
+	var file = get_sound_file(name)
+	var player: AudioStreamPlayer3D = spawn_player(file, options)
+	
+	return player
 
 func play_at_location(name: String, position: Vector3, options = {}) -> AudioStreamPlayer3D:
 	if !sounds.has(name.trim_suffix("{%n}")):
 		print("SFX: The sound called '", name, "' does not exist.")
 		return AudioStreamPlayer3D.new()
 		
-	var file = null
+	var file = get_sound_file(name)
+	var player: AudioStreamPlayer3D = spawn_player(file, options)
 	
-	if name.ends_with("{%n}"):
-		var name_without_template = name.trim_suffix("{%n}")
-		var number_of_sound_files = sounds[name_without_template].size()
-		var random_index = floor(rand_range(0, number_of_sound_files))
+	add_child(player)
+	
+	player.global_transform.origin = position
+	player.play()
+	
+	return player
 
-		file = sounds[name_without_template][random_index]
-	else:
-		file = sounds[name][0]
-		
+func on_timer_end(player: AudioStreamPlayer3D) -> void:
+	player.queue_free()
+
+func spawn_player(file: AudioStream, options = {}) -> AudioStreamPlayer3D:
 	var player: AudioStreamPlayer3D = AudioStreamPlayer3D.new()
 	var timer: SceneTreeTimer = get_tree().create_timer(float(file.get_length()), false)
 	
@@ -57,15 +70,26 @@ func play_at_location(name: String, position: Vector3, options = {}) -> AudioStr
 	
 	if options.has("unit_db"):
 		player.unit_db = options["unit_db"]
-	
-	var _signal = timer.connect("timeout", player, "queue_free")
-	add_child(player)
-	
-	player.global_transform.origin = position
-	player.play()
+		
+	if !options.has("loop"):
+		var _signal = timer.connect("timeout", self, "on_timer_end", [player])
 	
 	return player
+	
+func get_sound_file(name: String) -> AudioStream:
+	var file: AudioStream = null
+	
+	if name.ends_with("{%n}"):
+		var name_without_template = name.trim_suffix("{%n}")
+		var number_of_sound_files = sounds[name_without_template].size()
+		var random_index = floor(rand_range(0, number_of_sound_files))
 
+		file = sounds[name_without_template][random_index] as AudioStream
+	else:
+		file = sounds[name][0] as AudioStream
+		
+	return file
+	
 func scan_directory(path: String, fileNameEndsWith: String = ""):
 	var results = []
 	var directory = Directory.new()

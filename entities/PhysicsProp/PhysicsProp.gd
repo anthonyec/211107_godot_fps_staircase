@@ -1,7 +1,5 @@
 extends RigidBody
 
-onready var slide_sound: AudioStreamPlayer3D = $SlideSound
-
 var max_linear_velocity: float = 10
 var sliding_ratio_speed: float = 8 # Lower number is a lower speed
 
@@ -15,6 +13,14 @@ var contact_local_normal: Vector3 = Vector3.ZERO
 var contact_local_position: Vector3 = Vector3.ZERO
 var last_contact_local_position: Vector3 = Vector3.ZERO
 var last_position: Vector3 = Vector3.ZERO
+
+onready var slide_sfx: AudioStreamPlayer3D = SFX.create("physics/metal/metal_box_scrape_rough_loop{%n}", {
+	"loop": true
+})
+
+func _ready() -> void:
+	slide_sfx.global_transform.origin = global_transform.origin
+	add_child(slide_sfx)
 
 func _process(delta: float) -> void:
 	DebugDraw.draw_ray_3d(global_transform.origin, linear_velocity.normalized(), linear_velocity.length(), Color.darkgreen)
@@ -36,8 +42,8 @@ func _process(delta: float) -> void:
 	# The `is_sliding` boolean can jump between values while the object slides. 
 	# To get around this the value is smoothed out by lerping over time.
 	is_sliding_ratio = lerp(is_sliding_ratio, (1 if is_sliding else 0), delta * sliding_ratio_speed)
-	
-	slide_sound.unit_db = lerp(-50, 10, is_sliding_ratio)
+		
+	slide_sfx.unit_db = lerp(-50, 10, is_sliding_ratio)
 	
 	last_contact_local_position = contact_local_position
 	last_position = global_transform.origin
@@ -52,14 +58,12 @@ func _integrate_forces( state ):
 
 func _on_body_entered(_body: Node) -> void:
 	var impact_ratio = clamp(linear_velocity.length() / max_linear_velocity, 0, 1)
-	
-	var _sound = SFX.play_at_location("physics/metal/metal_box_impact_soft{%n}", global_transform.origin, {
+	var _sound = SFX.play_at_location("physics/metal/metal_box_impact_hard{%n}", global_transform.origin, {
 		"unit_db": lerp(-10, 20, impact_ratio)
 	})
 	
+	slide_sfx.play()
 	DebugDraw.draw_ray_3d(global_transform.origin, contact_local_normal, 3, Color.blue)
-	
-	slide_sound.play()
 
 func _on_body_exited(_body: Node) -> void:
 	pass
