@@ -6,7 +6,7 @@ var sounds = {}
 
 func _ready():
 	print("SFX: Started")
-	
+		
 	var current_directory_path = self.get_script().get_path()
 	var base_directory_path = str(current_directory_path).replace("/SFX.gd", "/audio")
 	var results = scan_directory(base_directory_path, ".wav")
@@ -53,6 +53,25 @@ func play_at_location(name: String, position: Vector3, options = {}) -> AudioStr
 	add_child(player)
 	
 	player.global_transform.origin = position
+	player.play()
+	
+	return player
+
+# TODO: Match all settings for everywhere to be the same as spatial sound.
+func play_everywhere(name: String, _options = {}) -> AudioStreamPlayer:
+	if !sounds.has(name.trim_suffix("{%n}")):
+		print("SFX: The sound called '", name, "' does not exist.")
+		return AudioStreamPlayer.new()
+		
+	var file = get_sound_file(name)
+	var player: AudioStreamPlayer = AudioStreamPlayer.new()
+	var _signal = player.connect("finished", player, "queue_free")
+	
+	player.set_pause_mode(PAUSE_MODE_PROCESS)
+	player.stream = file
+	
+	add_child(player)
+	
 	player.play()
 	
 	return player

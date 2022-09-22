@@ -9,7 +9,7 @@ onready var velocity: Spatial = $VelocitySensor
 
 var last_position: Vector3
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	var ratio = clamp(velocity.meters_per_second / 5, 0, 1)
 	
 	oscillator.frequency = lerp(1, 3, ratio)

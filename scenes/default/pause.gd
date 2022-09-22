@@ -6,6 +6,7 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("ui_cancel"):
+		var _sfx = SFX.play_everywhere("warning")
 		get_tree().paused = !get_tree().paused
 		
 	if get_tree().paused:
