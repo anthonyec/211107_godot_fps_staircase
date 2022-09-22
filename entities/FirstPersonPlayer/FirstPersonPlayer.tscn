@@ -1,7 +1,12 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://entities/FirstPersonPlayer/FirstPersonPlayer.gd" type="Script" id=1]
 [ext_resource path="res://entities/Footsteps/Footsteps.tscn" type="PackedScene" id=2]
+
+[sub_resource type="CylinderMesh" id=7]
+top_radius = 0.0
+bottom_radius = 0.2
+height = 0.5
 
 [sub_resource type="CapsuleShape" id=5]
 radius = 0.3
@@ -17,6 +22,13 @@ script = ExtResource( 1 )
 
 [node name="Camera" type="Camera" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, 0 )
+
+[node name="Head" type="MeshInstance" parent="Camera"]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -0.137635 )
+cast_shadow = 0
+generate_lightmap = false
+mesh = SubResource( 7 )
+skeleton = NodePath("../..")
 
 [node name="Collision" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )

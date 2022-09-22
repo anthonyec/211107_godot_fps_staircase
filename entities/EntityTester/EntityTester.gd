@@ -1,6 +1,7 @@
 tool
 extends Spatial
 
+export var debug_camera: bool = true
 export var show_floor: bool = true
 
 onready var scene_floor: Spatial = $Floor
@@ -8,6 +9,9 @@ onready var toggle_slow_motion_buttin: Button = get_node("%ToggleSlowMotionButto
 onready var reset_scene_button: Button = get_node("%ResetSceneButton")
 
 func _ready() -> void:
+	if !debug_camera:
+		$Camera.queue_free()
+	
 	scene_floor.visible = show_floor
 	var _r = reset_scene_button.connect("button_up", self, "reset_scene")
 	var _t = toggle_slow_motion_buttin.connect("button_up", self, "toggle_slow_motion")

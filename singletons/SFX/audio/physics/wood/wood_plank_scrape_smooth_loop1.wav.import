@@ -1,0 +1,23 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/wood_plank_scrape_smooth_loop1.wav-47d6c2d043d8806ae3fe693fc0657137.sample"
+
+[deps]
+
+source_file="res://singletons/SFX/audio/physics/wood/wood_plank_scrape_smooth_loop1.wav"
+dest_files=[ "res://.import/wood_plank_scrape_smooth_loop1.wav-47d6c2d043d8806ae3fe693fc0657137.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

@@ -36,5 +36,6 @@ func step() -> void:
 		return
 	
 	var _sfx = SFX.play_at_location("footsteps/" + current_surface + "_{%n}", global_transform.origin, {
+		"unit_db": 0,
 		"pitch_scale": rand_range(1, 1.5)
 	})

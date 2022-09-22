@@ -19,6 +19,7 @@ var last_contact_local_position: Vector3 = Vector3.ZERO
 var last_position: Vector3 = Vector3.ZERO
 
 onready var slide_sfx: AudioStreamPlayer3D = SFX.create(slide_sfx_name, {
+	"max_distance": 15,
 	"loop": true
 })
 
@@ -46,8 +47,8 @@ func _process(delta: float) -> void:
 	
 	var speed_ratio = clamp((linear_velocity.length() / max_linear_velocity), 0, 1)
 	
-	slide_sfx.unit_db = lerp(-50, 3, is_sliding_ratio)
-	slide_sfx.pitch_scale = lerp(0.8, 1, speed_ratio)
+	slide_sfx.unit_db = lerp(-100, -25, is_sliding_ratio)
+	slide_sfx.pitch_scale = lerp(0.9, 1, speed_ratio)
 	
 	last_contact_local_position = contact_local_position
 	last_position = global_transform.origin
@@ -62,10 +63,13 @@ func _integrate_forces( state ):
 
 func _on_body_entered(_body: Node) -> void:
 	var impact_ratio = clamp(linear_velocity.length() / max_linear_velocity, 0, 1)
-	var impact_sfx_name: String = soft_impact_sfx_name if impact_ratio < 0.8 else hard_impact_sfx_name
+	var soft_hit: bool = impact_ratio < 0.8
+	var impact_sfx_name: String = soft_impact_sfx_name if soft_hit else hard_impact_sfx_name
+	var max_db: float = -5 if soft_hit else -25
 	
 	var _sound = SFX.play_at_location(impact_sfx_name, global_transform.origin, {
-		"unit_db": lerp(-10, 3, impact_ratio),
+		"unit_db": lerp(-50, 0, impact_ratio),
+		"max_db": max_db,
 		"pitch_scale": rand_range(0.9, 1.1)
 	})
 	

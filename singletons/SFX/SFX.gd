@@ -58,7 +58,7 @@ func play_at_location(name: String, position: Vector3, options = {}) -> AudioStr
 	return player
 
 # TODO: Match all settings for everywhere to be the same as spatial sound.
-func play_everywhere(name: String, _options = {}) -> AudioStreamPlayer:
+func play_everywhere(name: String, options = {}) -> AudioStreamPlayer:
 	if !sounds.has(name.trim_suffix("{%n}")):
 		print("SFX: The sound called '", name, "' does not exist.")
 		return AudioStreamPlayer.new()
@@ -70,8 +70,10 @@ func play_everywhere(name: String, _options = {}) -> AudioStreamPlayer:
 	player.set_pause_mode(PAUSE_MODE_PROCESS)
 	player.stream = file
 	
-	add_child(player)
+	if options.has("volume_db"):
+		player.volume_db = options["volume_db"]
 	
+	add_child(player)
 	player.play()
 	
 	return player
@@ -86,9 +88,17 @@ func spawn_player(file: AudioStream, options = {}) -> AudioStreamPlayer3D:
 	player.attenuation_filter_cutoff_hz = 20500
 	player.stream = file
 	player.unit_db = 0
+	player.max_db = 0
+	player.max_distance = 30
 	
 	if options.has("unit_db"):
 		player.unit_db = options["unit_db"]
+		
+	if options.has("max_distance"):
+		player.max_distance = options["max_distance"]
+		
+	if options.has("max_db"):
+		player.max_db = options["max_db"]
 		
 	if options.has("pitch_scale"):
 		player.pitch_scale = options["pitch_scale"]
