@@ -2,12 +2,12 @@
 
 importer="wav"
 type="AudioStreamSample"
-path="res://.import/warning.wav-32fe6edaa66d1c9a35e7ec555f2cf052.sample"
+path="res://.import/warning.wav-32c7121f33e1dc04e36d4488f014f5a7.sample"
 
 [deps]
 
-source_file="res://singletons/SFX/audio/physics/warning.wav"
-dest_files=[ "res://.import/warning.wav-32fe6edaa66d1c9a35e7ec555f2cf052.sample" ]
+source_file="res://singletons/SFX/audio/warning.wav"
+dest_files=[ "res://.import/warning.wav-32c7121f33e1dc04e36d4488f014f5a7.sample" ]
 
 [params]
 

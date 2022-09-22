@@ -56,7 +56,7 @@ func _integrate_forces( state ):
 func _on_body_entered(body: Node) -> void:
 	var impact_ratio = clamp(linear_velocity.length() / max_linear_velocity, 0, 1)
 	
-	SFX.play_at_location("physics/metal/metal_box_impact_hard{%n}", global_transform.origin, {
+	SFX.play_at_location("physics/metal/metal_box_impact_soft{%n}", global_transform.origin, {
 		"unit_db": lerp(-10, 20, impact_ratio)
 	})
 	
