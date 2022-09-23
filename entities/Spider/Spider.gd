@@ -15,6 +15,7 @@ func transform_direction_to_camera_angle(direction: Vector3) -> Vector3:
 	# rotate the direction vector.
 	var camera = get_viewport().get_camera()
 	var camera_angle_y = camera.global_transform.basis.get_euler().y
+	
 	return direction.rotated(Vector3.UP, camera_angle_y)
 	
 func _ready() -> void:

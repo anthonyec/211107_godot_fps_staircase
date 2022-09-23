@@ -66,10 +66,10 @@ func _on_body_entered(_body: Node) -> void:
 	var impact_ratio = clamp(linear_velocity.length() / max_linear_velocity, 0, 1)
 	var soft_hit: bool = impact_ratio < 0.8
 	var impact_sfx_name: String = soft_impact_sfx_name if soft_hit else hard_impact_sfx_name
-	var max_db: float = -5 if soft_hit else -25
+	var max_db: float = 12 if soft_hit else -25
 	
 	var _sound = SFX.play_at_location(impact_sfx_name, global_transform.origin, {
-		"unit_db": lerp(-50, 0, impact_ratio),
+		"unit_db": lerp(-40, 12, impact_ratio),
 		"max_db": max_db,
 		"pitch_scale": rand_range(0.9, 1.1)
 	})

@@ -6,11 +6,14 @@ export var move_duration: float = 0.5
 export var want_to_step_distance: float = 0.5
 export var step_height: float = 0.5
 
+# Height of the foot plant raycast. A value too high will cause the leg to step ontop of high surfaces above the body.
 export var leg_height: float = 0.8
+
 # Layer to include in raycast. Found here: https://godotforums.org/d/25733-is-there-a-way-to-tell-the-editor-your-int-is-a-bit-mask-like-collision-mask-or-layer/2
 export(int, LAYERS_3D_PHYSICS) var foot_plant_raycast_layer
 
 onready var foot: Spatial = $Foot
+onready var pole: Spatial = $Pole
 onready var home: Position3D = $Home
 onready var velocity: Spatial = $VelocitySensor
 
@@ -68,6 +71,7 @@ func _process(_delta: float) -> void:
 		
 		if result:
 			end_position_to_use_as_plant = result.position
+			pole.global_transform.origin.y = end_position_to_use_as_plant.y + (leg_height * 2)
 				
 		var normalized_time = elapsed_time / move_duration
 		var end_position = end_position_to_use_as_plant
