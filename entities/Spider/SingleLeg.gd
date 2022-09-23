@@ -6,6 +6,7 @@ export var move_duration: float = 0.5
 export var want_to_step_distance: float = 0.5
 export var step_height: float = 0.5
 
+export var leg_height: float = 0.8
 # Layer to include in raycast. Found here: https://godotforums.org/d/25733-is-there-a-way-to-tell-the-editor-your-int-is-a-bit-mask-like-collision-mask-or-layer/2
 export(int, LAYERS_3D_PHYSICS) var foot_plant_raycast_layer
 
@@ -42,7 +43,8 @@ func _process(_delta: float) -> void:
 		var distance_from_home = plant_foot_position.distance_to(home.global_transform.origin)
 		foot.global_transform.origin = plant_foot_position
 		
-		if distance_from_home > want_to_step_distance and is_allowed_to_move:
+		 # TODO: Add a check for "uncomfortable" positions. Sometimes the spider may stop moving but the leg is stretched too far or overlapping the body or another leg.
+		if distance_from_home > want_to_step_distance and is_allowed_to_move and velocity.is_moving:
 			state = "start_move"
 	
 	if state == "start_move":
@@ -62,13 +64,10 @@ func _process(_delta: float) -> void:
 		elapsed_time = elapsed_time + get_process_delta_time();
 		
 		var space_state = get_world().direct_space_state
-		var result = space_state.intersect_ray(end_position_to_use_as_plant + (Vector3.UP * step_height), end_position_to_use_as_plant - (Vector3.UP * 0.05), [], foot_plant_raycast_layer)
+		var result = space_state.intersect_ray(end_position_to_use_as_plant + (Vector3.UP * leg_height), end_position_to_use_as_plant - (Vector3.UP * leg_height), [], foot_plant_raycast_layer)
 		
 		if result:
 			end_position_to_use_as_plant = result.position
-		
-			DebugDraw.draw_line_3d(end_position_to_use_as_plant + (Vector3.UP * step_height), end_position_to_use_as_plant - (Vector3.UP * 0.05), Color.red)
-			DebugDraw.draw_box(result.position, Vector3(0.1, 0.1, 0.1), Color.red)
 				
 		var normalized_time = elapsed_time / move_duration
 		var end_position = end_position_to_use_as_plant
@@ -80,7 +79,11 @@ func _process(_delta: float) -> void:
 			DebugDraw.draw_box(start_foot_position, Vector3(0.1, 0.1, 0.1), Color.red)
 			DebugDraw.draw_box(center_point, Vector3(0.1, 0.1, 0.1), Color.green)
 			DebugDraw.draw_box(end_position, Vector3(0.1, 0.1, 0.1), Color.blue)
+			
+			if result:
+				DebugDraw.draw_line_3d(end_position_to_use_as_plant + (Vector3.UP * leg_height), end_position_to_use_as_plant - (Vector3.UP * leg_height), Color.red)
+				DebugDraw.draw_box(result.position, Vector3(0.1, 0.1, 0.1), Color.red)
 		
-		if elapsed_time >= move_duration or foot.global_transform.origin.distance_to(end_position) < 0.1:
+		if elapsed_time >= move_duration or foot.global_transform.origin.distance_to(end_position) < 0.005:
 			end_position_to_use_as_plant = end_position
 			state = "end_move"

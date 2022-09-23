@@ -15,7 +15,6 @@ size = Vector3( 0.2, 0.2, 0.2 )
 [node name="SpiderLeg" type="Spatial"]
 transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0.486358, 0, 0 )
 script = ExtResource( 1 )
-debug = true
 foot_plant_raycast_layer = 1
 
 [node name="VelocitySensor" parent="." instance=ExtResource( 4 )]

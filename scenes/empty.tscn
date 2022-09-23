@@ -130,11 +130,11 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.08681, 0.744153, -2.93139 )
 
 [node name="SpiderLeg1" parent="Spider/Body/Legs/LegPair1" instance=ExtResource( 12 )]
 transform = Transform( 0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 0, 0, 0 )
-debug = false
+debug = true
 
 [node name="SpiderLeg2" parent="Spider/Body/Legs/LegPair1" instance=ExtResource( 12 )]
 transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0, 0 )
-debug = false
+debug = true
 
 [node name="LegPair2" parent="Spider/Body/Legs" instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.08681, 0.744153, -2.65599 )
@@ -142,22 +142,18 @@ start_index = 1
 
 [node name="SpiderLeg1" parent="Spider/Body/Legs/LegPair2" instance=ExtResource( 12 )]
 transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0 )
-debug = false
 
 [node name="SpiderLeg2" parent="Spider/Body/Legs/LegPair2" instance=ExtResource( 12 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0 )
-debug = false
 
 [node name="LegPair3" parent="Spider/Body/Legs" instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.08681, 0.744153, -2.41896 )
 
 [node name="SpiderLeg1" parent="Spider/Body/Legs/LegPair3" instance=ExtResource( 12 )]
 transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0 )
-debug = false
 
 [node name="SpiderLeg2" parent="Spider/Body/Legs/LegPair3" instance=ExtResource( 12 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0 )
-debug = false
 
 [node name="LegPair4" parent="Spider/Body/Legs" instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.08681, 0.744153, -2.05271 )
@@ -165,11 +161,9 @@ start_index = 1
 
 [node name="SpiderLeg1" parent="Spider/Body/Legs/LegPair4" instance=ExtResource( 12 )]
 transform = Transform( -0.819152, 0, -0.573576, 0, 1, 0, 0.573576, 0, -0.819152, 0.229204, 0, -0.160491 )
-debug = false
 
 [node name="SpiderLeg2" parent="Spider/Body/Legs/LegPair4" instance=ExtResource( 12 )]
 transform = Transform( -0.819152, 0, 0.573576, 0, 1, 0, -0.573576, 0, -0.819152, -0.18227, 0, -0.127627 )
-debug = false
 
 [node name="MeshInstance" type="MeshInstance" parent="Spider/Body"]
 transform = Transform( 3.18662, 0, 0, 0, 3.18662, 0, 0, 0, 3.18662, 0, 0, 0.23534 )
