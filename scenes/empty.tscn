@@ -110,6 +110,7 @@ distance_from_target = 3.0
 
 [node name="Spider" type="KinematicBody" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.08681, 0.744153, -2.47599 )
+collision_layer = 2
 script = ExtResource( 4 )
 speed = 0.0
 rotation_speed = 0.5

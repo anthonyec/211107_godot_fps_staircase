@@ -146,6 +146,11 @@ camera_down={
  ]
 }
 
+[layer_names]
+
+3d_physics/layer_1="environment"
+3d_physics/layer_2="player"
+
 [physics]
 
 common/enable_pause_aware_picking=true

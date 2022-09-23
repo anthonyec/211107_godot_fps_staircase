@@ -20,6 +20,7 @@ var last_position: Vector3 = Vector3.ZERO
 
 onready var slide_sfx: AudioStreamPlayer3D = SFX.create(slide_sfx_name, {
 	"max_distance": 15,
+	"max_db": -15,
 	"loop": true
 })
 
@@ -47,7 +48,7 @@ func _process(delta: float) -> void:
 	
 	var speed_ratio = clamp((linear_velocity.length() / max_linear_velocity), 0, 1)
 	
-	slide_sfx.unit_db = lerp(-100, -25, is_sliding_ratio)
+	slide_sfx.unit_db = lerp(-100, 0, is_sliding_ratio)
 	slide_sfx.pitch_scale = lerp(0.9, 1, speed_ratio)
 	
 	last_contact_local_position = contact_local_position
