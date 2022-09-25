@@ -1,6 +1,85 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://entities/FPSItemSelection/weapons/Shotgun/Shotgun.gd" type="Script" id=1]
+
+[sub_resource type="Animation" id=4]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Mesh:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Mesh:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("OmniLight:light_energy")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 50.0 ]
+}
+
+[sub_resource type="Animation" id=5]
+resource_name = "shoot"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("Mesh:translation")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0, 0.11742 ), Vector3( 0, 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Mesh:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ), Vector3( 17.71, 0, 0 ), Vector3( 0, 0, 0 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("OmniLight:light_energy")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.014718, 0.036455 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ 0.0, 50.0, 0.0 ]
+}
 
 [sub_resource type="CubeMesh" id=1]
 size = Vector3( 0.05, 0.05, 0.5 )
@@ -16,22 +95,38 @@ size = Vector3( 0.05, 0.07, 0.4 )
 [node name="Shotgun" type="Spatial"]
 script = ExtResource( 1 )
 
-[node name="MeshInstance" type="MeshInstance" parent="."]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/RESET = SubResource( 4 )
+anims/shoot = SubResource( 5 )
+
+[node name="OmniLight" type="OmniLight" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.435471 )
+light_color = Color( 1, 0.968627, 0.615686, 1 )
+light_energy = 50.0
+
+[node name="Mesh" type="Spatial" parent="."]
+
+[node name="MeshInstance" type="MeshInstance" parent="Mesh"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.13567 )
 mesh = SubResource( 1 )
+skeleton = NodePath("../..")
 
-[node name="MeshInstance5" type="MeshInstance" parent="."]
+[node name="MeshInstance5" type="MeshInstance" parent="Mesh"]
 transform = Transform( 0.573279, 0, 0, 0, 1, 0, 0, 0, 0.165226, 0, -0.0369375, 0.0755755 )
 mesh = SubResource( 1 )
+skeleton = NodePath("../..")
 
-[node name="MeshInstance3" type="MeshInstance" parent="."]
+[node name="MeshInstance3" type="MeshInstance" parent="Mesh"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0.0196182, 0.0201049, -0.151587 )
 mesh = SubResource( 2 )
+skeleton = NodePath("../..")
 
-[node name="MeshInstance4" type="MeshInstance" parent="."]
+[node name="MeshInstance4" type="MeshInstance" parent="Mesh"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -0.0218683, 0.0201049, -0.151587 )
 mesh = SubResource( 2 )
+skeleton = NodePath("../..")
 
-[node name="MeshInstance2" type="MeshInstance" parent="."]
+[node name="MeshInstance2" type="MeshInstance" parent="Mesh"]
 transform = Transform( 1, 0, 0, 0, 0.96997, -0.243226, 0, 0.243226, 0.96997, 0, -0.0557666, 0.299546 )
 mesh = SubResource( 3 )
+skeleton = NodePath("../..")

@@ -40,6 +40,7 @@ mesh = SubResource( 7 )
 skeleton = NodePath("../../..")
 
 [node name="FPSItemSelection" parent="Head/Camera" instance=ExtResource( 6 )]
+unique_name_in_owner = true
 items = [ ExtResource( 4 ), ExtResource( 5 ) ]
 
 [node name="Collision" type="CollisionShape" parent="."]

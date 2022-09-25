@@ -13,6 +13,7 @@ var look_friction = 0.5
 onready var head: Spatial = $Head
 onready var footsteps: = $Footsteps
 onready var camera: Camera = get_node("%Camera")
+onready var item_selection: Spatial = get_node("%FPSItemSelection") # TODO: Rename.
 onready var velocity: Spatial = $VelocitySensor
 
 var is_running: bool = false
@@ -24,9 +25,11 @@ var mouse_relative_delta: Vector2
 var rotation_bob_ratio: float = 0
 
 var original_head_position: Vector3
+var original_item_selection_position: Vector3
 
 func _ready() -> void:
 	original_head_position = head.transform.origin
+	original_item_selection_position = item_selection.transform.origin
 
 func _physics_process(delta: float) -> void:
 	var speed: float = run_speed if is_running else walk_speed
@@ -59,6 +62,12 @@ func _physics_process(delta: float) -> void:
 	
 	head.transform.origin = original_head_position.linear_interpolate(head_bob_position, rotation_bob_ratio)
 	head.rotation.z = deg2rad(lerp(0, footsteps.oscillator.wave, rotation_bob_ratio))
+	
+	item_selection.transform.origin = original_item_selection_position.linear_interpolate(
+		original_item_selection_position + (Vector3.UP * footsteps.oscillator.wave * 0.01), 
+		rotation_bob_ratio
+	)	
+	item_selection.rotation.y = deg2rad(lerp(0, footsteps.oscillator.wave * 4, rotation_bob_ratio))
 
 func _process(_delta: float) -> void:
 	is_running = Input.is_action_pressed("sprint")
