@@ -1,0 +1,144 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://entities/PhysicsProp/PhysicsProp.tscn" type="PackedScene" id=2]
+
+[sub_resource type="BoxShape" id=7]
+extents = Vector3( 1, 0.05, 1 )
+
+[sub_resource type="CubeMesh" id=2]
+size = Vector3( 2, 0.1, 2 )
+
+[sub_resource type="SpatialMaterial" id=4]
+flags_transparent = true
+albedo_color = Color( 1, 1, 1, 0.619608 )
+
+[sub_resource type="BoxShape" id=5]
+extents = Vector3( 0.05, 0.7, 0.05 )
+
+[sub_resource type="CubeMesh" id=6]
+size = Vector3( 0.1, 1.4, 0.1 )
+
+[sub_resource type="BoxShape" id=3]
+extents = Vector3( 0.1, 0.25, 0.1 )
+
+[sub_resource type="CubeMesh" id=8]
+size = Vector3( 0.2, 0.5, 0.2 )
+
+[node name="TableProp" type="Spatial"]
+
+[node name="PhysicsProp" parent="." instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4343, 0 )
+contacts_reported = 1
+sleeping = true
+slide_sfx_name = "physics/wood/wood_plank_scrape_smooth_loop1{%n}"
+soft_impact_sfx_name = "physics/wood/wood_plank_impact_hard{%n}"
+hard_impact_sfx_name = "physics/wood/wood_box_impact_hard{%n}"
+
+[node name="CollisionShape" type="CollisionShape" parent="PhysicsProp"]
+shape = SubResource( 7 )
+
+[node name="MeshInstance" type="MeshInstance" parent="PhysicsProp/CollisionShape"]
+mesh = SubResource( 2 )
+material/0 = SubResource( 4 )
+
+[node name="CollisionShape2" type="CollisionShape" parent="PhysicsProp"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.827089, -0.750864, 0.8201 )
+shape = SubResource( 5 )
+
+[node name="MeshInstance2" type="MeshInstance" parent="PhysicsProp/CollisionShape2"]
+mesh = SubResource( 6 )
+skeleton = NodePath("../../CollisionShape")
+material/0 = SubResource( 4 )
+
+[node name="CollisionShape3" type="CollisionShape" parent="PhysicsProp"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.818252, -0.750864, 0.8201 )
+shape = SubResource( 5 )
+
+[node name="MeshInstance2" type="MeshInstance" parent="PhysicsProp/CollisionShape3"]
+mesh = SubResource( 6 )
+skeleton = NodePath("../../CollisionShape")
+material/0 = SubResource( 4 )
+
+[node name="CollisionShape4" type="CollisionShape" parent="PhysicsProp"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.827089, -0.750864, -0.82893 )
+shape = SubResource( 5 )
+
+[node name="MeshInstance2" type="MeshInstance" parent="PhysicsProp/CollisionShape4"]
+mesh = SubResource( 6 )
+skeleton = NodePath("../../CollisionShape")
+material/0 = SubResource( 4 )
+
+[node name="CollisionShape5" type="CollisionShape" parent="PhysicsProp"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.818252, -0.750864, -0.82893 )
+shape = SubResource( 5 )
+
+[node name="MeshInstance2" type="MeshInstance" parent="PhysicsProp/CollisionShape5"]
+mesh = SubResource( 6 )
+skeleton = NodePath("../../CollisionShape")
+material/0 = SubResource( 4 )
+
+[node name="PhysicsProp2" parent="." instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.72902, 0.51315 )
+contacts_reported = 1
+sleeping = true
+soft_impact_sfx_name = "physics/glass/glass_impact_hard{%n}"
+hard_impact_sfx_name = "physics/glass/glass_impact_hard{%n}"
+
+[node name="CollisionShape6" type="CollisionShape" parent="PhysicsProp2"]
+shape = SubResource( 3 )
+
+[node name="MeshInstance2" type="MeshInstance" parent="PhysicsProp2/CollisionShape6"]
+mesh = SubResource( 8 )
+skeleton = NodePath("../../../PhysicsProp/CollisionShape")
+material/0 = SubResource( 4 )
+
+[node name="PhysicsProp3" parent="." instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.72902, 0.18565 )
+contacts_reported = 1
+sleeping = true
+soft_impact_sfx_name = "physics/glass/glass_impact_hard{%n}"
+hard_impact_sfx_name = "physics/glass/glass_impact_hard{%n}"
+
+[node name="CollisionShape6" type="CollisionShape" parent="PhysicsProp3"]
+shape = SubResource( 3 )
+
+[node name="MeshInstance2" type="MeshInstance" parent="PhysicsProp3/CollisionShape6"]
+mesh = SubResource( 8 )
+skeleton = NodePath("../../../PhysicsProp/CollisionShape")
+material/0 = SubResource( 4 )
+
+[node name="PhysicsProp4" parent="." instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.72902, -0.134977 )
+contacts_reported = 1
+sleeping = true
+soft_impact_sfx_name = "physics/glass/glass_impact_hard{%n}"
+hard_impact_sfx_name = "physics/glass/glass_impact_hard{%n}"
+
+[node name="CollisionShape6" type="CollisionShape" parent="PhysicsProp4"]
+shape = SubResource( 3 )
+
+[node name="MeshInstance2" type="MeshInstance" parent="PhysicsProp4/CollisionShape6"]
+mesh = SubResource( 8 )
+skeleton = NodePath("../../../PhysicsProp/CollisionShape")
+material/0 = SubResource( 4 )
+
+[node name="PhysicsProp5" parent="." instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.471274, 1.72902, 0.24462 )
+contacts_reported = 1
+sleeping = true
+soft_impact_sfx_name = "physics/glass/glass_impact_hard{%n}"
+hard_impact_sfx_name = "physics/glass/glass_cup_break{%n}"
+
+[node name="CollisionShape6" type="CollisionShape" parent="PhysicsProp5"]
+shape = SubResource( 3 )
+
+[node name="MeshInstance2" type="MeshInstance" parent="PhysicsProp5/CollisionShape6"]
+mesh = SubResource( 8 )
+skeleton = NodePath("../../../PhysicsProp/CollisionShape")
+material/0 = SubResource( 4 )
+
+[connection signal="body_exited" from="PhysicsProp" to="PhysicsProp" method="_on_body_exited"]
+[connection signal="body_exited" from="PhysicsProp2" to="PhysicsProp2" method="_on_body_exited"]
+[connection signal="body_exited" from="PhysicsProp3" to="PhysicsProp3" method="_on_body_exited"]
+[connection signal="body_exited" from="PhysicsProp4" to="PhysicsProp4" method="_on_body_exited"]
+[connection signal="body_exited" from="PhysicsProp5" to="PhysicsProp5" method="_on_body_exited"]

@@ -1,7 +1,8 @@
 extends KinematicBody
 
 export var enabled: bool = true
-export var speed: float = 5
+export var walk_speed: float = 1.5
+export var run_speed: float = 3
 export var jump_strength: float = 6
 export var gravity: float = 20
 export var look_sensitivity: Vector2 = Vector2(15, 20)
@@ -9,21 +10,26 @@ export var head_bob: Vector2 = Vector2(0, 0.06)
 var input_friction = 0.2
 var look_friction = 0.5
 
-onready var camera: Camera = $Camera
+onready var head: Spatial = $Head
 onready var footsteps: = $Footsteps
+onready var camera: Camera = get_node("%Camera")
+onready var velocity: Spatial = $VelocitySensor
 
+var is_running: bool = false
 var snap_vector: Vector3 = Vector3.DOWN
 var move_velocity: Vector3 = Vector3.ZERO
 var input_velocity: Vector3 = Vector3.ZERO
 var look_velocity: Vector2
 var mouse_relative_delta: Vector2
+var rotation_bob_ratio: float = 0
 
-var original_camera_origin: Vector3
+var original_head_position: Vector3
 
 func _ready() -> void:
-	original_camera_origin = camera.transform.origin
+	original_head_position = head.transform.origin
 
 func _physics_process(delta: float) -> void:
+	var speed: float = run_speed if is_running else walk_speed
 	var just_landed = is_on_floor() and snap_vector == Vector3.ZERO
 	var is_jumping = is_on_floor() and Input.is_action_just_pressed("jump")
 	var input_direction: Vector2 = Input.get_vector("move_left", "move_right", "move_up", "move_down")
@@ -42,15 +48,20 @@ func _physics_process(delta: float) -> void:
 		snap_vector = Vector3.ZERO
 	elif just_landed:
 		snap_vector = Vector3.DOWN
+		SFX.play_at_location("footsteps/wood_hard_{%n}", global_transform.origin)
 
 	move_velocity = move_and_slide_with_snap(move_velocity, snap_vector, Vector3.UP, true)
 	apply_rotation(delta)
 	footsteps.is_on_floor = is_on_floor()
+
+	rotation_bob_ratio = lerp(rotation_bob_ratio, clamp(velocity.meters_per_second / run_speed, 0, 1), delta * 1.5)
+	var head_bob_position = original_head_position + (Vector3.UP * head_bob.y * abs(footsteps.oscillator.wave))	
 	
-	# Camera bobbing.
-	camera.transform.origin = original_camera_origin + (Vector3.UP * head_bob.y * abs(footsteps.oscillator.wave))	
-	camera.rotation.z = deg2rad(footsteps.oscillator.wave)
-	
+	head.transform.origin = original_head_position.linear_interpolate(head_bob_position, rotation_bob_ratio)
+	head.rotation.z = deg2rad(lerp(0, footsteps.oscillator.wave, rotation_bob_ratio))
+
+func _process(_delta: float) -> void:
+	is_running = Input.is_action_pressed("sprint")
 	
 func apply_rotation(delta: float) -> void:
 	mouse_relative_delta = mouse_relative_delta + Vector2(

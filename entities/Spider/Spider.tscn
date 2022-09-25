@@ -1,0 +1,125 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://entities/Spider/Spider.gd" type="Script" id=3]
+[ext_resource path="res://entities/Spider/LegPair.tscn" type="PackedScene" id=4]
+[ext_resource path="res://entities/Spider/SpiderLeg.tscn" type="PackedScene" id=5]
+
+[sub_resource type="SphereShape" id=14]
+radius = 0.5
+
+[sub_resource type="SphereMesh" id=13]
+radius = 0.1
+height = 0.2
+
+[sub_resource type="Animation" id=15]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Body:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=16]
+resource_name = "breath"
+length = 2.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Body:translation")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ), Vector3( 0, -0.1, 0 ) ]
+}
+
+[node name="Spider" type="KinematicBody"]
+collision_layer = 2
+script = ExtResource( 3 )
+speed = 0.0
+rotation_speed = 0.5
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
+shape = SubResource( 14 )
+
+[node name="Body" type="Spatial" parent="."]
+
+[node name="Legs" type="Spatial" parent="Body"]
+unique_name_in_owner = true
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 6.08681, -0.744153, 2.47599 )
+
+[node name="LegPair1" parent="Body/Legs" instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.08681, 0.744153, -2.93139 )
+
+[node name="SpiderLeg1" parent="Body/Legs/LegPair1" instance=ExtResource( 5 )]
+transform = Transform( 0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 0, 0, 0 )
+move_duration = 0.3
+want_to_step_distance = 0.3
+
+[node name="SpiderLeg2" parent="Body/Legs/LegPair1" instance=ExtResource( 5 )]
+transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0, 0 )
+move_duration = 0.3
+want_to_step_distance = 0.3
+
+[node name="LegPair2" parent="Body/Legs" instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.08681, 0.744153, -2.65599 )
+start_index = 1
+
+[node name="SpiderLeg1" parent="Body/Legs/LegPair2" instance=ExtResource( 5 )]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0 )
+move_duration = 0.3
+want_to_step_distance = 0.3
+
+[node name="SpiderLeg2" parent="Body/Legs/LegPair2" instance=ExtResource( 5 )]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0 )
+move_duration = 0.3
+want_to_step_distance = 0.3
+
+[node name="LegPair3" parent="Body/Legs" instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.08681, 0.744153, -2.41896 )
+
+[node name="SpiderLeg1" parent="Body/Legs/LegPair3" instance=ExtResource( 5 )]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0 )
+move_duration = 0.3
+want_to_step_distance = 0.3
+
+[node name="SpiderLeg2" parent="Body/Legs/LegPair3" instance=ExtResource( 5 )]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0 )
+move_duration = 0.3
+want_to_step_distance = 0.3
+
+[node name="LegPair4" parent="Body/Legs" instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.08681, 0.744153, -2.05271 )
+start_index = 1
+
+[node name="SpiderLeg1" parent="Body/Legs/LegPair4" instance=ExtResource( 5 )]
+transform = Transform( -0.819152, 0, -0.573576, 0, 1, 0, 0.573576, 0, -0.819152, 0.229204, 0, -0.160491 )
+
+[node name="SpiderLeg2" parent="Body/Legs/LegPair4" instance=ExtResource( 5 )]
+transform = Transform( -0.819152, 0, 0.573576, 0, 1, 0, -0.573576, 0, -0.819152, -0.18227, 0, -0.127627 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Body"]
+transform = Transform( 3.18662, 0, 0, 0, 3.18662, 0, 0, 0, 3.18662, 0, 0, 0.23534 )
+mesh = SubResource( 13 )
+skeleton = NodePath("../..")
+
+[node name="MeshInstance2" type="MeshInstance" parent="Body"]
+transform = Transform( 2.16007, 0, 0, 0, 2.16007, 0, 0, 0, 2.16007, 0, 0, -0.292024 )
+mesh = SubResource( 13 )
+skeleton = NodePath("../..")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "breath"
+anims/RESET = SubResource( 15 )
+anims/breath = SubResource( 16 )

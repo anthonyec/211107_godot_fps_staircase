@@ -1,5 +1,7 @@
 extends Camera
 
+signal select_into_world(position)
+
 export var target_path: NodePath
 export var orbit: bool
 
@@ -87,6 +89,9 @@ func _input(event):
 	if event is InputEventMouseMotion:
 		mouse_relative_position = event.relative
 		
+	if event.is_action_pressed("ui_select"):
+		select_into_world_space()
+		
 	if event.is_action_pressed("camera_slow_mod"):
 		speed = speed_slow
 
@@ -146,3 +151,10 @@ func load_camera():
 		self.rotation = Vector3(node_data["rot_x"], node_data["rot_y"], node_data["rot_z"])
 	
 	save_game.close()
+	
+func select_into_world_space():
+	var space_state = get_world().direct_space_state
+	var result = space_state.intersect_ray(global_transform.origin, global_transform.origin + (-global_transform.basis.z) * 1000)
+	
+	if result:
+		emit_signal("select_into_world", result.position)

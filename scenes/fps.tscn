@@ -1,0 +1,92 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://scenes/default/pause.gd" type="Script" id=1]
+[ext_resource path="res://addons/kenney_prototype_textures/dark/texture_01.png" type="Texture" id=2]
+[ext_resource path="res://addons/kenney_prototype_textures/dark/texture_08.png" type="Texture" id=3]
+[ext_resource path="res://entities/FirstPersonPlayer/FirstPersonPlayer.tscn" type="PackedScene" id=9]
+
+[sub_resource type="SpatialMaterial" id=12]
+albedo_texture = ExtResource( 2 )
+uv1_offset = Vector3( 0.5, 0, 0 )
+uv1_triplanar = true
+
+[sub_resource type="SpatialMaterial" id=3]
+albedo_texture = ExtResource( 3 )
+uv1_scale = Vector3( 0.25, 0, 0.25 )
+uv1_triplanar = true
+
+[sub_resource type="BoxShape" id=4]
+extents = Vector3( 25, 0.025, 25 )
+
+[node name="Scene" type="Spatial"]
+
+[node name="Pause" type="Node" parent="."]
+pause_mode = 2
+script = ExtResource( 1 )
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+
+[node name="Sun" type="DirectionalLight" parent="."]
+transform = Transform( 0.607903, 0.67744, 0.414161, 0, -0.521605, 0.853187, 0.794012, -0.518655, -0.317085, 0, 4.21976, 0 )
+shadow_enabled = true
+shadow_color = Color( 0.368627, 0.556863, 0.709804, 1 )
+directional_shadow_split_2 = 0.383
+directional_shadow_normal_bias = 0.02
+directional_shadow_max_distance = 50.0
+
+[node name="FirstPersonPlayer" parent="." instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.37863, 0.743554, 2.83446 )
+
+[node name="Ramp" type="CSGBox" parent="."]
+transform = Transform( 1, 0, 0, 0, 0.819152, -0.573577, 0, 0.573577, 0.819152, -0.971744, 1.60769, -1.70992 )
+material_override = SubResource( 12 )
+use_collision = true
+height = 0.5
+depth = 8.0
+
+[node name="CSGBox5" type="CSGBox" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.966433, 3.84909, -8.83705 )
+material_override = SubResource( 12 )
+use_collision = true
+height = 0.5
+depth = 8.0
+
+[node name="Corridor" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2062, 0, 0 )
+
+[node name="CSGBox4" type="CSGBox" parent="Corridor"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.67951, 2.78185, -2.00117 )
+material_override = SubResource( 12 )
+use_collision = true
+width = 2.83953
+height = 0.2
+depth = 8.0
+
+[node name="CSGBox2" type="CSGBox" parent="Corridor"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.97661, 1.37905, -2.00117 )
+material_override = SubResource( 12 )
+use_collision = true
+width = 0.2
+height = 3.01216
+depth = 8.0
+
+[node name="CSGBox3" type="CSGBox" parent="Corridor"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.29885, 1.37905, -2.00117 )
+material_override = SubResource( 12 )
+use_collision = true
+width = 0.2
+height = 3.01216
+depth = 8.0
+
+[node name="Ground" type="RigidBody" parent="." groups=["wood_soft"]]
+mode = 1
+
+[node name="Mesh" type="CSGBox" parent="Ground"]
+width = 50.0
+height = 0.05
+depth = 50.0
+material = SubResource( 3 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Ground"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000617325, 0.000597477, -0.000333667 )
+shape = SubResource( 4 )

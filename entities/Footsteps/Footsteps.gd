@@ -12,8 +12,8 @@ var last_position: Vector3
 func _process(_delta: float) -> void:
 	var ratio = clamp(velocity.meters_per_second / 5, 0, 1)
 	
-	oscillator.frequency = lerp(1, 3, ratio)
-	oscillator.paused = velocity.linear < 0.01
+	oscillator.frequency = lerp(0.5, 3, ratio)
+	oscillator.paused = !velocity.is_moving_excluding_angular_movement or !is_on_floor
 
 	if is_colliding():
 		set_surface_from_collision()

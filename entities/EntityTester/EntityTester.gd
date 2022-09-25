@@ -13,6 +13,8 @@ func _ready() -> void:
 		$Camera.queue_free()
 	
 	scene_floor.visible = show_floor
+	
+	# Connect buttons
 	var _r = reset_scene_button.connect("button_up", self, "reset_scene")
 	var _t = toggle_slow_motion_buttin.connect("button_up", self, "toggle_slow_motion")
 	

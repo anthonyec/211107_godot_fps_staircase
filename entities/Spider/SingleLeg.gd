@@ -42,10 +42,17 @@ func _process(_delta: float) -> void:
 	if debug:
 		DebugDraw.draw_ray_3d(global_transform.origin, added_velocity, added_velocity.length(), Color.red)
 		
-	if state == "plant":
+	if state == "plant":		
 		var distance_from_home = plant_foot_position.distance_to(home.global_transform.origin)
+		
 		foot.global_transform.origin = plant_foot_position
 		
+		var space_state = get_world().direct_space_state
+		var result = space_state.intersect_ray(plant_foot_position + (Vector3.UP * leg_height), plant_foot_position - (Vector3.UP * leg_height), [], foot_plant_raycast_layer)
+		
+		if result:
+			foot.global_transform.origin = result.position
+			
 		 # TODO: Add a check for "uncomfortable" positions. Sometimes the spider may stop moving but the leg is stretched too far or overlapping the body or another leg.
 		if distance_from_home > want_to_step_distance and is_allowed_to_move and velocity.is_moving:
 			state = "start_move"

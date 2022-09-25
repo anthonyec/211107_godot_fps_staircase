@@ -9,6 +9,8 @@ onready var body: Spatial = $Body
 
 var leg_pairs: Spatial
 var snap_vector: Vector3 = Vector3.DOWN
+var input_direction: Vector2 = Vector2.ZERO
+var look_direction: Vector3 = Vector3.ZERO
 
 func transform_direction_to_camera_angle(direction: Vector3) -> Vector3:
 	# Get the active cameras global Y axis rotation and use that to 
@@ -22,19 +24,20 @@ func _ready() -> void:
 	leg_pairs = get_node("%Legs")
 
 func _process(_delta: float) -> void:
-	var input_direction: Vector2 = Input.get_vector("move_left", "move_right", "move_up", "move_down")
-	var direction = Vector3(input_direction.x, 0, input_direction.y)
+	input_direction = input_direction.normalized()
 	
-	direction.y = direction.y - gravity
-	direction = direction.rotated(Vector3.UP, global_transform.basis.get_euler().y)
+	var direction = Vector3(input_direction.x, 0, input_direction.y)	
+	var angle_to_look_direction: float = (-global_transform.basis.z).signed_angle_to(look_direction, global_transform.basis.y)
 	
-	if Input.is_action_pressed("jump"):
-		direction.y = direction.y + 100
-		
-	if Input.is_action_pressed("rotate_left"):
+	if abs(angle_to_look_direction) > deg2rad(30):
+		direction = Vector3.ZERO
+	
+	if angle_to_look_direction < deg2rad(-0.5):
+		rotate(Vector3.UP, deg2rad(-1))
+
+	if angle_to_look_direction > deg2rad(0.5):
 		rotate(Vector3.UP, deg2rad(1))
 		
-	if Input.is_action_pressed("rotate_right"):
-		rotate(Vector3.UP, deg2rad(-1))
+	direction.y = direction.y - gravity
 	
 	var _velocity = move_and_slide(direction, Vector3.UP, true)
