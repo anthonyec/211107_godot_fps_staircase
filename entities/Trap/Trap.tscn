@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="CylinderMesh" id=1]
+top_radius = 0.3
+bottom_radius = 0.3
+height = 0.1
+
+[node name="Trap" type="Spatial"]
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+mesh = SubResource( 1 )

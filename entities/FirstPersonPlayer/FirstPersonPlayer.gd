@@ -1,8 +1,8 @@
 extends KinematicBody
 
 export var enabled: bool = true
-export var walk_speed: float = 1.5
-export var run_speed: float = 3
+export var walk_speed: float = 2
+export var run_speed: float = 4
 export var jump_strength: float = 6
 export var gravity: float = 20
 export var look_sensitivity: Vector2 = Vector2(15, 20)
@@ -48,7 +48,7 @@ func _physics_process(delta: float) -> void:
 		snap_vector = Vector3.ZERO
 	elif just_landed:
 		snap_vector = Vector3.DOWN
-		SFX.play_at_location("footsteps/wood_hard_{%n}", global_transform.origin)
+		var _sfx = SFX.play_at_location("footsteps/wood_hard_{%n}", global_transform.origin)
 
 	move_velocity = move_and_slide_with_snap(move_velocity, snap_vector, Vector3.UP, true)
 	apply_rotation(delta)

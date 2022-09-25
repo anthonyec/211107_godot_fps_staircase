@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://entities/FPSItemSelection/weapons/Trap/Trap.gd" type="Script" id=1]
+
+[sub_resource type="CylinderMesh" id=1]
+top_radius = 0.3
+bottom_radius = 0.3
+height = 0.1
+
+[node name="Trap" type="Spatial"]
+script = ExtResource( 1 )
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+transform = Transform( 0.938866, -0.307228, -0.155374, 0.183109, 0.827774, -0.53034, 0.29155, 0.469468, 0.833426, 0, 0, 0 )
+mesh = SubResource( 1 )
