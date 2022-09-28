@@ -11,14 +11,13 @@ var direction: float = 1
 var previous_value: float = 0
 var wave: float = 0
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	if paused:
 		return
 	
-	phase = phase + (frequency / 100)
+	phase = phase + (frequency * delta)
 	wave = sin(phase * PI * 2)
 
-	
 	# This is a workaround because the peak never falls exactly on the 
 	# amplitude, and I dont know how to fix it.
 	# - https://www.reddit.com/r/godot/comments/e05q1l/help_how_to_correctly_set_a_sine_wave_movement/

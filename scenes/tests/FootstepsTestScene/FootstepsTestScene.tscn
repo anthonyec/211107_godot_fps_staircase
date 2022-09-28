@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://entities/EntityTester/EntityTester.tscn" type="PackedScene" id=1]
 [ext_resource path="res://entities/Oscillator/Oscillator.tscn" type="PackedScene" id=2]
@@ -7,6 +7,38 @@
 [sub_resource type="SphereMesh" id=1]
 radius = 0.5
 height = 1.0
+
+[sub_resource type="Animation" id=2]
+resource_name = "New Anim"
+length = 10.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Blob:translation")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 7 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0.6, 0 ), Vector3( 0, 0.6, -2.96802 ) ]
+}
+
+[sub_resource type="Animation" id=3]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Blob:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0.6, 0 ) ]
+}
 
 [node name="FootstepsTestScene" type="Spatial"]
 
@@ -19,5 +51,11 @@ skeleton = NodePath("")
 
 [node name="Footsteps" parent="EntityTester/Blob" instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.6, 0 )
+default_surface = "wood_hard"
 
 [node name="CycleOscillator" parent="EntityTester" instance=ExtResource( 2 )]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="EntityTester"]
+autoplay = "New Anim"
+"anims/New Anim" = SubResource( 2 )
+anims/RESET = SubResource( 3 )

@@ -4,19 +4,19 @@
 [ext_resource path="res://entities/Spider/SpiderLeg.tscn" type="PackedScene" id=2]
 
 [sub_resource type="Animation" id=1]
-length = 0.001
+length = 10.0
 loop = true
 tracks/0/type = "value"
-tracks/0/path = NodePath("SpiderLeg:translation")
+tracks/0/path = NodePath("SpiderLeg:rotation_degrees")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PoolRealArray( 0, 4, 5, 9 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector3( 0, 1, 0 ) ]
+"values": [ Vector3( 0, -90, 0 ), Vector3( 0, 180, 0 ), Vector3( 0, -90, 0 ), Vector3( 0, 360, 0 ) ]
 }
 
 [sub_resource type="Animation" id=2]
@@ -36,7 +36,7 @@ tracks/0/keys = {
 "values": [ Vector3( 0, 0.5, 0 ), Vector3( 0, 0.5, -4 ) ]
 }
 
-[node name="Spatial" type="Spatial"]
+[node name="SingleLegRotationTestScene" type="Spatial"]
 
 [node name="EntityTesterScene" parent="." instance=ExtResource( 1 )]
 

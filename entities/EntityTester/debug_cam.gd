@@ -117,7 +117,10 @@ func _input(event):
 		
 	if event.is_action_pressed("load"):
 		self.load_camera()
-	
+
+func get_save_filename() -> String:
+	var scene_id = String(get_parent().get_instance_id())
+	return "user://dev_cam_" + scene_id + ".save"
 
 func save_camera():
 	var save_game = File.new()
@@ -130,12 +133,11 @@ func save_camera():
 		"rot_z": self.rotation.z
 	})
 	
-	save_game.open("user://dev_cam.save", File.WRITE)
+	save_game.open(get_save_filename(), File.WRITE)
 	save_game.store_line(data);
 	
 	save_game.close()	
 
-	
 func load_camera():
 	var save_game = File.new()
 	
@@ -143,7 +145,7 @@ func load_camera():
 		print("No saved data for dev cam")
 		return
 		
-	save_game.open("user://dev_cam.save", File.READ)
+	save_game.open(get_save_filename(), File.READ)
 	
 	while save_game.get_position() < save_game.get_len():
 		var node_data = parse_json(save_game.get_line())
