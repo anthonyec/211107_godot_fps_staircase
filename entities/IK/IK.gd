@@ -1,6 +1,9 @@
+tool
 extends Spatial
 
+export var editor: bool = false
 export var debug: bool = false
+export(Array, NodePath) var selected_bones = []
 export var target_path: NodePath
 export var pole_path: NodePath
 export var iterations: int = 10;
@@ -18,8 +21,12 @@ var total_length: float = 0
 var allow_reach: bool = false
 
 func _ready() -> void:
-	bones = get_children()
-	
+	if selected_bones.empty():
+		bones = get_children()
+	else:
+		for selected_bone in selected_bones:
+			bones.append(get_node(selected_bone.get_as_property_path()))
+
 	if is_error():
 		set_process(false)
 		return
@@ -36,6 +43,9 @@ func _ready() -> void:
 			lengths.append(distance)
 
 func _process(_delta: float) -> void:	
+	if !editor and Engine.is_editor_hint():
+		return
+		
 	solve()
 
 func is_error() -> bool:
@@ -134,12 +144,10 @@ func solve() -> void:
 				DebugDraw.draw_line_3d(positions[index - 1], positions[index], Color.white)
 	
 	# Apply all the positions to the bones after calculation	
-	for index in range(positions.size()):
-		# TODO: Find out how to do rotation correctly. It seems pretty correct but lags a bit. Less lag if using postions[index + 1].
-		# - https://github.com/liviusgrosu/Fabrik-Inverse-Kinematics-Spider/blob/main/Assets/Resources/Scripts/FastIKFabric.cs#L188-L196
-		# - https://github.com/ToughNutToCrack/InverseKinematics-intro/blob/master/Assets/Scripts/Dragon/SimplifiedIK.cs
-		# - https://github.com/godotengine/godot-demo-projects/blob/master/3d/ik/addons/sade/ik_fabrik.gd#L264
+	for index in range(positions.size()):			
+		bones[index].global_transform.origin = positions[index]
+	
+		# Rotation adjustment **must** come after setting the position to avoid an effect where
+		# the joints don't look like they are connecting when the target or pole move too fast.
 		if index < positions.size() - 1:
 			bones[index].look_at(positions[index + 1], Vector3.UP)
-			
-		bones[index].global_transform.origin = positions[index]

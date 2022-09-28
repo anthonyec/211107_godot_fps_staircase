@@ -47,6 +47,7 @@ func _process(delta: float) -> void:
 		if debug:
 			DebugDraw.draw_ray_3d(global_transform.origin, direction_to_node, 2, Color.red)
 	else:
+		spider.look_direction = Vector3.ZERO
 		spider.input_direction = Vector2.ZERO
 
 func _on_debug_cam_select_into_world(position) -> void:
