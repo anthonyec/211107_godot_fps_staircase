@@ -249,16 +249,14 @@ mode = 1
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000617325, 0.000597477, -0.000333667 )
 shape = SubResource( 4 )
 
+[node name="Camera" type="Camera" parent="."]
+script = ExtResource( 5 )
+
 [node name="Spider" parent="." instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.755973, 1.12611, 3.34523 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.65756, 0.685176, 4.89527 )
 
 [node name="SpiderBrain" type="Spatial" parent="Spider"]
 script = ExtResource( 6 )
-debug = true
 navigation_node = NodePath("../../Navigation")
-
-[node name="Camera" type="Camera" parent="."]
-transform = Transform( 1, 0, 0, 0, 0.773907, 0.6333, 0, -0.6333, 0.773907, 0, 3.9562, 7.21117 )
-script = ExtResource( 5 )
 
 [connection signal="select_into_world" from="Camera" to="Spider/SpiderBrain" method="_on_debug_cam_select_into_world"]

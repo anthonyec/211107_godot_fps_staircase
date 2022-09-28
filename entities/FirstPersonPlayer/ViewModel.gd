@@ -6,11 +6,11 @@ onready var item_position: Position3D = $ItemPosition
 
 var current_child_index: int = 0
 
-func _ready() -> void:
+func _ready() -> void:		
 	switch_to_item(0)
 
 func get_item(index: int):
-	if not items.empty():
+	if not items.empty() and index < items.size():
 		var item_resouce = items[index]
 		var item = item_resouce.fps_view_scene.instance()
 		
@@ -43,7 +43,7 @@ func next_item():
 	switch_to_item(index)
 
 func on_item_consumed(index: int) -> void:
-	previous_item()
+	print("on_item_consumed")
 	
 func on_item_recoiled() -> void:
 	print("recoil camera")

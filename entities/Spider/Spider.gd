@@ -23,7 +23,7 @@ func transform_direction_to_camera_angle(direction: Vector3) -> Vector3:
 func _ready() -> void:
 	leg_pairs = get_node("%Legs")
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	input_direction = input_direction.normalized()
 	
 	var direction = Vector3(input_direction.x, 0, input_direction.y)	
@@ -32,12 +32,8 @@ func _process(_delta: float) -> void:
 	if abs(angle_to_look_direction) > deg2rad(30):
 		direction = Vector3.ZERO
 	
-	if angle_to_look_direction < deg2rad(-0.5):
-		rotate(Vector3.UP, deg2rad(-1))
+	rotate(Vector3.UP, angle_to_look_direction * delta)
 
-	if angle_to_look_direction > deg2rad(0.5):
-		rotate(Vector3.UP, deg2rad(1))
-		
 	direction.y = direction.y - gravity
 	
 	var _velocity = move_and_slide(direction, Vector3.UP, true)

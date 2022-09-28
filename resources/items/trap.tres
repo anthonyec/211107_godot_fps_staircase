@@ -1,7 +1,7 @@
 [gd_resource type="Resource" load_steps=3 format=2]
 
 [ext_resource path="res://resources/items/item_resource.gd" type="Script" id=1]
-[ext_resource path="res://entities/FPSItemSelection/weapons/Trap/Trap.tscn" type="PackedScene" id=2]
+[ext_resource path="res://entities/TrapViewModel/TrapViewModel.tscn" type="PackedScene" id=2]
 
 [resource]
 script = ExtResource( 1 )

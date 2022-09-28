@@ -18,7 +18,7 @@ func _ready() -> void:
 		if !(child as Oscillator) and (child as SpiderLeg):
 			legs.append(child)
 	
-	if legs.size() == 0:
+	if legs.size() < 2:
 		print("No legs found as children. Make sure legs have a class_name of 'SpiderLeg' and are direct children of a LegPair.")
 		set_process(false)
 

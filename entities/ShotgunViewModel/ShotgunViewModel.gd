@@ -4,6 +4,9 @@ signal recoiled
 
 onready var animation: AnimationPlayer = $AnimationPlayer
 
+func _ready() -> void:
+	get_node("OmniLight").light_energy = 0
+
 func shoot() -> void:
 	if animation.is_playing():
 		return

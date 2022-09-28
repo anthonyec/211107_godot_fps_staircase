@@ -72,6 +72,7 @@ distance_from_target = 3.0
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0353904, 0.0256133, 0.198468 )
 
 [node name="Spider" parent="." instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.96016, 0.956247, 0 )
 
 [node name="Ground3" type="RigidBody" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 10.0264, 0.0742149, -0.00895977 )
